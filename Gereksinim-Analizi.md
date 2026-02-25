@@ -27,7 +27,7 @@
    - **API Metodu:** ` PUT /admin/products/{productId}`
    - **Açıklama:** Mevcut bir ürünün bilgilerini düzenlemek için kullanılır.
      
-8. ** Sipariş Listeleme**
+8. **Sipariş Listeleme**
    - **API Metodu:** `GET /admin/orders`
    - **Açıklama:** Yönetici paneli için tüm kullanıcı siparişlerini listeler
      
