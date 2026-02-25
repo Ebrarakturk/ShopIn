@@ -1,32 +1,31 @@
-Üye Olma
+1. **Ürün Listeleme**
+   - **API Metodu:** ` GET /products`
+   - **Açıklama:** Sistemdeki tüm ürünlerin listelenmesini sağlar.
+     
+2. **Detay Görüntüleme**
+   - **API Metodu:** `GET /products/{productId}`
+   - **Açıklama:**  Seçilen bir ürünün detaylı bilgilerini görüntüler.
 
-API Metodu: POST /auth/register
-Açıklama: Kullanıcıların yeni hesaplar oluşturarak sisteme kayıt olmasını sağlar. Kişisel bilgilerin toplanmasını ve hesap oluşturma işlemlerini içerir. Kullanıcılar email adresi ve şifre belirleyerek hesap oluşturur.
-Profil Görüntüleme
+3. **Kullanıcı Kayıt**
+   - **API Metodu:** ` POST /auth/register`
+   - **Açıklama:** Yeni kullanıcıların sisteme kayıt olmasını sağlar.
 
-API Metodu: GET /users/{userId}
-Açıklama: Kullanıcının profil bilgilerini görüntülemesini sağlar. Kullanıcı adı, email, telefon gibi kişisel bilgiler ve hesap durumu gösterilir. Kullanıcılar kendi profil bilgilerini görüntüleyebilir veya yöneticiler diğer kullanıcıların bilgilerini inceleyebilir. Güvenlik için giriş yapmış olmak gerekir.
-Profil Güncelleme
+4. **Kullanıcı Giriş**
+   - **API Metodu:** `POST /auth/login`
+   - **Açıklama:**  Kayıtlı kullanıcıların sisteme giriş yapmasını sağlar.
 
-API Metodu: PUT /users/{userId}
-Açıklama: Kullanıcının profil bilgilerini güncellemesini sağlar. Kullanıcılar ad, soyad, email, telefon gibi kişisel bilgilerini değiştirebilir. Güvenlik için giriş yapmış olmak gerekir ve kullanıcılar yalnızca kendi bilgilerini güncelleyebilir.
-Hesap Silme
+5. **Sepet Listeleme**
+   - **API Metodu:** `GET /cart`
+   - **Açıklama:**  Kullanıcının sepetine eklediği ürünleri listeler.
 
-API Metodu: DELETE /users/{userId}
-Açıklama: Kullanıcının hesabını sistemden kalıcı olarak silmesini sağlar. Kullanıcı hesabını kapatmak istediğinde veya yönetici tarafından hesap kapatılması gerektiğinde kullanılır. Bu işlem geri alınamaz ve kullanıcının tüm verileri silinir. Güvenlik için giriş yapmış olmak gerekir.
-Üye Olma
+6. **Sepetten Ürün Silme**
+   - **API Metodu:** `DELETE /cart/{itemId}`
+   - **Açıklama:** Sepetteki belirli bir ürünü sepetten kaldırır.
 
-API Metodu: POST /auth/register
-Açıklama: Kullanıcıların yeni hesaplar oluşturarak sisteme kayıt olmasını sağlar. Kişisel bilgilerin toplanmasını ve hesap oluşturma işlemlerini içerir. Kullanıcılar email adresi ve şifre belirleyerek hesap oluşturur.
-Profil Görüntüleme
-
-API Metodu: GET /users/{userId}
-Açıklama: Kullanıcının profil bilgilerini görüntülemesini sağlar. Kullanıcı adı, email, telefon gibi kişisel bilgiler ve hesap durumu gösterilir. Kullanıcılar kendi profil bilgilerini görüntüleyebilir veya yöneticiler diğer kullanıcıların bilgilerini inceleyebilir. Güvenlik için giriş yapmış olmak gerekir.
-Profil Güncelleme
-
-API Metodu: PUT /users/{userId}
-Açıklama: Kullanıcının profil bilgilerini güncellemesini sağlar. Kullanıcılar ad, soyad, email, telefon gibi kişisel bilgilerini değiştirebilir. Güvenlik için giriş yapmış olmak gerekir ve kullanıcılar yalnızca kendi bilgilerini güncelleyebilir.
-Hesap Silme
-
-API Metodu: DELETE /users/{userId}
-Açıklama: Kullanıcının hesabını sistemden kalıcı olarak silmesini sağlar. Kullanıcı hesabını kapatmak istediğinde veya yönetici tarafından hesap kapatılması gerektiğinde kullanılır. Bu işlem geri alınamaz ve kullanıcının tüm verileri silinir. Güvenlik için giriş yapmış olmak gerekir.
+7. **Ürün Güncelleme**
+   - **API Metodu:** ` PUT /admin/products/{productId}`
+   - **Açıklama:** Mevcut bir ürünün bilgilerini düzenlemek için kullanılır.
+     
+8. **8. Sipariş Listeleme**
+   - **API Metodu:** `GET /admin/orders`
+   - **Açıklama:** Yönetici paneli için tüm kullanıcı siparişlerini listeler
