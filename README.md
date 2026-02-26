@@ -1,5 +1,5 @@
 # ShopIn
-# PROJE HAKKINDA
+# Proje Hakkında
 
 <img width="1024" height="600" alt="image" src="https://github.com/user-attachments/assets/429a6114-db5f-43f3-962f-4d1ee2e261b1" />
 
