@@ -11,20 +11,20 @@
 **PROJE KATEGORİSİ:**
 - E-ticaret sitesi
 
-**REFERANS UYGULAMASI:**
+**REFERANS UYGULAMA:**
 - https://www.shopier.com/
 
-# PROJE BAĞLANTILARI 
+# Proje Linkleri 
 - **REST API Adresi:**
 - **Web Ön Uç Adresi:**
 
-# PROJE EKİBİ
+# Proje Ekibi
 
-**GRUP ADI:**
+**Grup Adı:**
 
 - DevS
 
-**GRUP ÜYELERİ:**
+**Ekip Üyeleri:**
 
  - Ebrar AKTÜRK
 
@@ -35,6 +35,7 @@
 Proje dokümantasyonuna aşağıdaki linklerden erişebilirsiniz:
 
 1) [Gereksinim Analizi](Gereksinim-Analizi.md)
+2) [REST API Tasarımı](
 
 
 
