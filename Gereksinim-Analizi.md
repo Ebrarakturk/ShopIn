@@ -67,6 +67,6 @@
 
 # Gereksinim Dağılımları
 
-1.[İsmail Taşinen'in Gereksinimleri](İsmail-Taşinen/İsmail-Taşinen-Gereksinimler.md) 
+1.[İsmail Taşinen'in Gereksinimleri](İsmail-Taşinen-Gerkesinimler.md) 
 
 2.[Ebrar Aktürk'ün Gereksinimleri](Ebrar-Aktürk-Gereksinimler.md)
