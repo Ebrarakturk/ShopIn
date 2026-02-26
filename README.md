@@ -1,6 +1,8 @@
 # ShopIn
 # PROJE HAKKINDA
+
 <img width="1024" height="600" alt="image" src="https://github.com/user-attachments/assets/429a6114-db5f-43f3-962f-4d1ee2e261b1" />
+
 
 **PROJE TANIMI:**
 
@@ -36,6 +38,11 @@ Proje dokümantasyonuna aşağıdaki linklerden erişebilirsiniz:
 
 1) [Gereksinim Analizi](Gereksinim-Analizi.md)
 2) [REST API Tasarımı](
+3) [REST API](
+4) [Web Front-End](
+5) [Mobil Front-End](
+6) [Mobil Backend](
+7) [Video Sunum](
 
 
 
