@@ -7,25 +7,25 @@
    - **Açıklama:**  Seçilen bir ürünün detaylı bilgilerini görüntüler.
 
 3. **Kullanıcı Kayıt**
-   - **API Metodu:** ` POST /auth/register`
+   - **API Metodu:** `POST /users/register`
    - **Açıklama:** Yeni kullanıcıların sisteme kayıt olmasını sağlar.
 
 4. **Kullanıcı Giriş**
-   - **API Metodu:** `POST /auth/login`
+   - **API Metodu:** `POST /users/login`
    - **Açıklama:**  Kayıtlı kullanıcıların sisteme giriş yapmasını sağlar.
 
 5. **Sepet Listeleme**
-   - **API Metodu:** `GET /cart`
+   - **API Metodu:** `GET /cart/:userId`
    - **Açıklama:**  Kullanıcının sepetine eklediği ürünleri listeler.
 
 6. **Sepetten Ürün Silme**
-   - **API Metodu:** `DELETE /cart/{itemId}`
+   - **API Metodu:** `DELETE /cart/:cartItemId`
    - **Açıklama:** Sepetteki belirli bir ürünü sepetten kaldırır.
 
 7. **Ürün Güncelleme**
-   - **API Metodu:** ` PUT /admin/products/{productId}`
+   - **API Metodu:** ` PUT /products/:id`
    - **Açıklama:** Mevcut bir ürünün bilgilerini düzenlemek için kullanılır.
      
 8. **8. Sipariş Listeleme**
-   - **API Metodu:** `GET /admin/orders`
+   - **API Metodu:** ` GET /orders`
    - **Açıklama:** Yönetici paneli için tüm kullanıcı siparişlerini listeler
