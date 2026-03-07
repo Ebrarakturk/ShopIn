@@ -1,0 +1,344 @@
+openapi: 3.0.3
+info:
+  title: ShopIn E-Ticaret Yönetim API'si
+  version: 1.0.0
+  description: >
+    Bu API, ShopIn e-ticaret platformundaki ürünlerin, sepet işlemlerinin ve 
+    sipariş süreçlerinin yönetilmesi için tasarlanmış bir RESTful servistir. 
+    Temel CRUD işlemlerini destekler. Ürünler kategorilere göre filtrelenebilir, 
+    sepet yönetilebilir ve sipariş takibi yapılabilir. API, JWT tabanlı 
+    kimlik doğrulama (Bearer Token) ile korunmaktadır.
+  contact:
+    name: Ebrar Aktürk
+    email: ebraraktrk@gmail.com
+
+servers:
+  - url: http://localhost:3000
+    description: Yerel geliştirme sunucusu (Development)
+
+tags:
+  - name: Urunler
+    description: Ürün listeleme, detay, stok takibi ve admin yönetim işlemleri
+  - name: Kimlik Dogrulama
+    description: Kullanıcı kayıt ve giriş (Auth) işlemleri
+  - name: Sepet
+    description: Kullanıcı sepetine ürün ekleme ve sepetten silme işlemleri
+  - name: Siparisler
+    description: Sipariş oluşturma ve geçmiş siparişleri listeleme işlemleri
+
+security:
+  - BearerAuth: []
+
+paths:
+  
+  /api/products:
+    get:
+      tags:
+        - Urunler
+      summary: Ürünleri Listele ve Filtrele
+      description: Sistemdeki tüm ürünlerin listelenmesini veya kategori/fiyata göre filtrelenmesini sağlar.
+      parameters:
+        - name: filter
+          in: query
+          required: false
+          description: Ürün adı veya kategoriye göre arama terimi
+          schema:
+            type: string
+          example: "ayakkabı"
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+      responses:
+        "200":
+          description: Ürünler başarıyla listelendi
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - Urunler
+      summary: Yeni Ürün Ekle (Admin)
+      description: Sisteme yeni bir ürün ekler. Yalnızca yönetici yetkisi gerekir.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        "201":
+          description: Ürün başarıyla oluşturuldu
+        "401":
+          description: Yetkisiz erişim
+
+  /api/products/{productId}:
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        description: Ürünün benzersiz kimlik numarası
+        schema:
+          type: string
+        example: "prd123"
+    get:
+      tags:
+        - Urunler
+      summary: Ürün Detay Getir
+      responses:
+        "200":
+          description: ürün detayları başarıyla getirildi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    put:
+      tags:
+        - Urunler
+      summary: Ürünü Güncelle (Admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        "200":
+          description: Ürün güncellendi
+    delete:
+      tags:
+        - Urunler
+      summary: Ürünü Sil (Admin)
+      responses:
+        "204":
+          description: Ürün silindi
+
+  /api/products/stock:
+    get:
+      tags:
+        - Urunler
+      summary: Stok Bilgilerini Görüntüle
+      description: Ürünlerin mevcut stok miktarlarını listeler.
+      responses:
+        "200":
+          description: Stok verileri getirildi
+
+  
+  /api/auth/register:
+    post:
+      tags:
+        - Kimlik Dogrulama
+      summary: Kullanıcı Kayıt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        "201":
+          description: Kayıt başarılı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /api/auth/login:
+    post:
+      tags:
+        - Kimlik Dogrulama
+      summary: Kullanıcı Giriş
+      responses:
+        "200":
+          description: Giriş başarılı, token döndürüldü
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: {type: string}
+
+  
+  /api/cart:
+    get:
+      tags:
+        - Sepet
+      summary: Sepeti Listele
+      responses:
+        "200":
+          description: Kullanıcının sepetindeki ürünler listelendi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    post:
+      tags:
+        - Sepet
+      summary: Sepete Ürün Ekle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId: {type: string}
+                quantity: {type: integer, example: 1}
+      responses:
+        "201":
+          description: Ürün sepete eklendi
+
+  /api/cart/{itemId}:
+    delete:
+      tags:
+        - Sepet
+      summary: Sepetten Ürün Sil
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ürün sepetten kaldırıldı
+
+  
+  /api/orders:
+    get:
+      tags:
+        - Siparisler
+      summary: Sipariş Geçmişini Listele
+      responses:
+        "200":
+          description: Kullanıcının tüm siparişleri getirildi
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+    post:
+      tags:
+        - Siparisler
+      summary: Sipariş Oluştur (Ödeme Yap)
+      responses:
+        "201":
+          description: Sipariş başarıyla oluşturuldu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+  /api/orders/{orderId}:
+    put:
+      tags:
+        - Siparisler
+      summary: Sipariş Durumu Güncelle (Admin)
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [Hazırlanıyor, Kargoya Verildi, Teslim Edildi, İptal Edildi]
+                  example: "Kargoya Verildi"
+      responses:
+        "200":
+          description: Durum güncellendi
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'İstek başlığına "Authorization: Bearer <token>" eklenmeli.'
+
+  schemas:
+    
+    User:
+      type: object
+      properties:
+        _id: {type: string, example: "usr123"}
+        name: {type: string, example: "Ahmet Yılmaz"}
+        email: {type: string, example: "ahmet@ornek.com"}
+        role: {type: string, enum: [user, admin], example: "user"}
+        createdAt: {type: string, format: date-time}
+
+    UserInput:
+      type: object
+      required: [name, email, password]
+      properties:
+        name: {type: string, example: "Ahmet Yılmaz"}
+        email: {type: string, format: email, example: "ahmet@ornek.com"}
+        password: {type: string, format: password, minLength: 6}
+
+    
+    Product:
+      type: object
+      properties:
+        _id: {type: string, example: "prd123"}
+        name: {type: string, example: "Spor Ayakkabı"}
+        price: {type: number, example: 1250.50}
+        category: {type: string, example: "Giyim"}
+        stock: {type: integer, example: 50}
+        description: {type: string, example: "Hafif ve rahat koşu ayakkabısı"}
+      required: [name, price, category]
+
+    ProductInput:
+      type: object
+      properties:
+        name: {type: string, minLength: 2, example: "Spor Ayakkabı"}
+        price: {type: number, minimum: 0, example: 1250.50}
+        category: {type: string, example: "Giyim"}
+        stock: {type: integer, example: 100}
+      required: [name, price, category]
+
+   
+    Cart:
+      type: object
+      properties:
+        _id: {type: string, example: "crt789"}
+        userId: {type: string, example: "usr123"}
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              productId: {$ref: '#/components/schemas/Product'}
+              quantity: {type: integer, example: 2}
+        totalPrice: {type: number, example: 2501.00}
+
+   
+    Order:
+      type: object
+      properties:
+        _id: {type: string, example: "ord456"}
+        userId: {type: string}
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              name: {type: string}
+              price: {type: number}
+              quantity: {type: integer}
+        totalAmount: {type: number, example: 2501.00}
+        status: {type: string, example: "Hazırlanıyor"}
+        address: {type: string, example: "Kadıköy, İstanbul"}
+        createdAt: {type: string, format: date-time}
