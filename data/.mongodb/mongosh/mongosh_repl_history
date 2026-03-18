@@ -1,0 +1,7 @@
+show dbs
+])  { name: "Deri Ceket", category: "Dis Giyim", price: 3500, stock: 15 }  { name: "Keten Gomlek", category: "Ust Giyim", price: 850, stock: 30 },  { name: "Jean Pantolon", category: "Alt Giyim", price: 1200, stock: 50 },  { name: "Oversize Tisort", category: "Ust Giyim", price: 450, stock: 100 },db.products.insertMany([
+use shopin_db
+exıt
+docker compose up --build -d
+show dbs
+])  { nam
