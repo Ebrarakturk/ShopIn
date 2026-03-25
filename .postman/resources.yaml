@@ -1,0 +1,8 @@
+# Use this workspace to collaborate
+workspace:
+  id: 6b04c85a-8926-493c-8dbc-b34f413b5713
+
+localResources:
+  specs:
+    - ..\ShopIn.yaml
+    - ..\ShopIn\ShopIn.yaml
