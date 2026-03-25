@@ -65,7 +65,7 @@ def list_orders():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-    return jsonify({"message": "ShopIn API'sine Hoş Geldiniz!"}), 200
+    
 
 # 1. GEREKSİNİM: Stok Listeleme
 @app.route('/products/stock', methods=['GET'])
