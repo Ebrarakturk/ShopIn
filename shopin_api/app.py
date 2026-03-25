@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 app = Flask(__name__)
 
 # MongoDB Bağlantısı
-client = MongoClient("mongodb+srv://ebrar_akturk:<db_password>@cluster0.rqknkis.mongodb.net/?appName=Cluster0")
+client = MongoClient("mongodb+srv://ebrar_akturk:passwordEbrar2005.@cluster0.rqknkis.mongodb.net/?appName=Cluster0")
 db = client.shopin_db
 
 @app.route('/')
