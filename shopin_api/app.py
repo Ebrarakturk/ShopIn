@@ -7,10 +7,9 @@ import os
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # MongoDB Atlas Bağlantısı
-# Kendi Connection String'ini buraya yapıştır!
 client = MongoClient("mongodb+srv://ebrar_akturk:Ebrar2005.@cluster0.rqknkis.mongodb.net/?retryWrites=true&w=majority")
 db = client['shopin_db']
 
