@@ -1,3 +1,3 @@
-# Ali Tutar'ın REST API Metotları
+# Ebrar Aktürk'ün REST API Metotları
 
 **API Test Videosu:** 
