@@ -1,7 +1,9 @@
+from flask_cors import CORS
 from flask import Flask, jsonify, request
 from pymongo import MongoClient
 from bson import ObjectId
 import os
+CORS(app)
 
 app = Flask(__name__)
 
