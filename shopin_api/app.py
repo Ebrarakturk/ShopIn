@@ -3,9 +3,11 @@ from flask import Flask, jsonify, request
 from pymongo import MongoClient
 from bson import ObjectId
 import os
-CORS(app)
+
 
 app = Flask(__name__)
+
+CORS(app)
 
 # MongoDB Atlas Bağlantısı
 # Kendi Connection String'ini buraya yapıştır!
