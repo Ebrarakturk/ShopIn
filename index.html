@@ -7,12 +7,19 @@
         body { font-family: 'Poppins', sans-serif; background: #f8f9fa; margin: 0; text-align: center; }
         .screen { display: none; padding: 50px 20px; }
         .active-screen { display: block; }
-        .btn { padding: 10px 20px; margin: 10px; cursor: pointer; border: none; border-radius: 5px; background: #2b2b2b; color: white; font-size: 16px; }
+        .btn { padding: 10px 20px; margin: 10px; cursor: pointer; border: none; border-radius: 5px; background: #2b2b2b; color: white; font-size: 16px; transition: 0.3s; }
         .btn:hover { background: #ff4757; }
-        input { padding: 10px; margin: 5px; width: 200px; border-radius: 5px; border: 1px solid #ccc; }
+        input, select { padding: 10px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; font-size: 15px;}
+        
         /* Navbar Stili */
-        .navbar { background: white; padding: 15px; display: flex; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .nav-right button { margin-left: 10px; }
+        .navbar { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .nav-right button, .nav-right select, .nav-right input { margin: 0; }
+        
+        /* Ürün Kartı Stili */
+        .product-card { background:white; padding:20px; border-radius:10px; width:220px; box-shadow:0 4px 8px rgba(0,0,0,0.1); text-align:center; transition: transform 0.2s; }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-icon { font-size:60px; background:#f8f9fa; padding:20px; border-radius:10px; margin-bottom:15px; }
     </style>
 </head>
 <body>
@@ -34,23 +41,27 @@
         <button class="btn" style="background:gray;" onclick="showScreen('screen-role')">Geri Dön</button>
     </div>
 
-    <div id="screen-store" class="screen">
+    <div id="screen-store" class="screen" style="padding: 0;">
         <div class="navbar">
-            <h2 style="margin:0;">ShopIn</h2>
+            <h2 style="margin:0; color: #2b2b2b;">ShopIn</h2>
             <div class="nav-right">
-                <input type="text" placeholder="Ürün Ara...">
-                <button class="btn">Ara</button>
-                <select class="btn" style="background:white; color:black;"><option>Tüm Kategoriler</option></select>
-                <button class="btn">🛒 Sepet (0)</button>
+                <input type="text" id="searchInput" placeholder="Ürün Ara..." onkeyup="filterProducts()">
+                <select id="categoryFilter" class="btn" style="background:white; color:black; border: 1px solid #ccc;" onchange="filterProducts()">
+                    <option value="all">Tüm Kategoriler</option>
+                    <option value="Elektronik">Elektronik</option>
+                    <option value="Giyim">Giyim</option>
+                    <option value="Kitap">Kitap</option>
+                </select>
+                <button id="cart-btn" class="btn" style="background: #49cc90;">🛒 Sepet (0)</button>
                 <button class="btn" onclick="showScreen('screen-account')" style="background:#ff4757;">👤 Hesabım</button>
             </div>
         </div>
         <br>
-        <h3>Ürünler Yükleniyor...</h3>
+        <div id="products-grid" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;"></div>
     </div>
 
     <div id="screen-account" class="screen">
-        <h2>Hesap Detayları</h2>
+        <h2 id="account-title">Hesap Detayları</h2>
         <button class="btn">📦 Geçmiş Siparişlerim</button>
         <button class="btn" onclick="showScreen('screen-store')">Alışverişe Dön</button>
         <button class="btn" onclick="logout()" style="background:red;">Çıkış Yap</button>
