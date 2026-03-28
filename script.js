@@ -1,7 +1,6 @@
 let currentRole = "";
 let cart = []; 
 
-// --- 30 ADET GERÇEK FOTOĞRAFLI VERİTABANI ---
 const products = [
     { id: 1, title: "Akıllı Saat v2", price: 2499, category: "Elektronik", img: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?q=80&w=300&auto=format&fit=crop", stock: 12, desc: "Gelişmiş adım sayar ve kalp ritmi ölçer.", specs: "Bluetooth 5.0, Su Geçirmez" },
     { id: 2, title: "Kablosuz Kulaklık", price: 899, category: "Elektronik", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=300&auto=format&fit=crop", stock: 8, desc: "Gürültü engelleyici (ANC) özellikli.", specs: "20 saat pil ömrü, Mikrofonlu" },
@@ -35,7 +34,6 @@ const products = [
     { id: 30, title: "Saç Kurutma Makinesi", price: 450, category: "Ev Aletleri", img: "https://images.unsplash.com/photo-1522338140262-f46f5912018a?q=80&w=300&auto=format&fit=crop", stock: 22, desc: "İyonik özellikli, profesyonel motor.", specs: "2200W, 2 Başlık" }
 ];
 
-// --- EKRAN GEÇİŞ MOTORU ---
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(el => el.classList.remove('active-screen'));
     document.getElementById(screenId).classList.add('active-screen');
@@ -47,21 +45,16 @@ function showAuth(role) {
     showScreen('screen-auth');
 }
 
-// --- GİRİŞ VE KAYIT (GÜVENLİK GÜNCELLEMESİ) ---
 function register() {
-    // 🚨 KORUMA: Yönetici olarak kayıt olmayı tamamen yasakla
-    if (currentRole === 'admin') {
-        return alert("⛔ Sistem Uyarısı: Dışarıdan yeni yönetici hesabı oluşturulamaz! Sadece yetkili patron giriş yapabilir.");
-    }
+    if (currentRole === 'admin') return alert("⛔ Sistem Uyarısı: Yeni yönetici hesabı oluşturulamaz!");
 
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
     if (!user || !pass) return alert("Kullanıcı adı ve şifre boş bırakılamaz!");
 
     let db = JSON.parse(localStorage.getItem("shopin_db")) || [];
-    if (db.find(u => u.username === user.toLowerCase())) {
-        return alert(`HATA: '${user}' isimli hesap zaten mevcut! Lütfen giriş yapın.`);
-    }
+    if (db.find(u => u.username === user.toLowerCase())) return alert(`HATA: '${user}' zaten mevcut!`);
+    
     db.push({ username: user.toLowerCase(), password: pass, role: currentRole });
     localStorage.setItem("shopin_db", JSON.stringify(db));
     alert("Kayıt başarılı! Şimdi giriş yapabilirsiniz.");
@@ -71,30 +64,25 @@ function login() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
 
-    // 👑 YÖNETİCİ (PATRON) GİRİŞİ (SABİT ŞİFRE)
     if (currentRole === 'admin') {
-        // Sadece bu özel şifre ve kullanıcı adıyla girilebilir!
         if (user === "admin" && pass === "shopin123") {
             localStorage.setItem("active_user", "Sistem Yöneticisi");
             document.getElementById('account-title').innerText = `👑 SİSTEM YÖNETİCİSİ`;
             alert("Hoş geldin Patron! Tüm yetkilerle giriş yapıldı.");
-            showScreen('screen-store'); 
-            renderProducts();
-            return; // İşlemi bitir, mağazaya geç
+            showScreen('screen-store'); renderProducts();
+            return; 
         } else {
-            return alert("⛔ Hatalı yönetici kullanıcı adı veya şifresi! Yetkisiz giriş denemesi.");
+            return alert("⛔ Hatalı yönetici giriş denemesi.");
         }
     }
 
-    // 👤 NORMAL KULLANICI GİRİŞİ
     let db = JSON.parse(localStorage.getItem("shopin_db")) || [];
     const foundUser = db.find(u => u.username === user.toLowerCase() && u.password === pass && u.role === currentRole);
 
     if (foundUser) {
         localStorage.setItem("active_user", foundUser.username);
         document.getElementById('account-title').innerText = `👤 ${foundUser.username.toUpperCase()} - Hesap Detayları`;
-        showScreen('screen-store'); 
-        renderProducts(); 
+        showScreen('screen-store'); renderProducts(); 
     } else {
         alert("Hatalı kullanıcı adı, şifre veya rol seçimi!");
     }
@@ -102,14 +90,11 @@ function login() {
 
 function logout() {
     localStorage.removeItem("active_user");
-    cart = []; 
-    updateCartBtn();
-    document.getElementById('username').value = "";
-    document.getElementById('password').value = "";
+    cart = []; updateCartBtn();
+    document.getElementById('username').value = ""; document.getElementById('password').value = "";
     showScreen('screen-role');
 }
 
-// --- MAĞAZA VE ÜRÜNLER ---
 function renderProducts(list = products) {
     const grid = document.getElementById('products-grid');
     grid.innerHTML = ""; 
@@ -136,138 +121,153 @@ function filterProducts() {
     renderProducts(filtered);
 }
 
-// --- ÜRÜN DETAY SAYFASI ---
 function showProductDetail(id) {
     const p = products.find(prod => prod.id === id);
-    const container = document.getElementById('product-detail-content');
-    
-    container.innerHTML = `
-        <img src="${p.img}" alt="${p.title}" style="width:100%; height:300px; object-fit:contain; border-radius:8px; margin-bottom:20px;">
+    document.getElementById('product-detail-content').innerHTML = `
+        <img src="${p.img}" style="width:100%; height:300px; object-fit:contain; border-radius:8px; margin-bottom:20px;">
         <h2 style="margin:0 0 10px 0;">${p.title}</h2>
         <p style="font-weight:900; font-size:28px; margin: 0 0 20px 0;">${p.price} TL</p>
         <p style="color: #666; margin-bottom: 5px;"><strong>Kategori:</strong> ${p.category}</p>
         <p style="color: #666; margin-bottom: 5px;"><strong>Açıklama:</strong> ${p.desc}</p>
         <p style="color: #666; margin-bottom: 20px;"><strong>Özellikler:</strong> ${p.specs}</p>
-        <p style="color: ${p.stock > 0 ? '#49cc90' : '#ff4757'}; font-weight: 700; font-size: 16px; margin-bottom: 20px;">
-            ${p.stock > 0 ? `Stokta var (${p.stock} adet)` : '❌ Tükendi!'}
-        </p>
+        <p style="color: ${p.stock > 0 ? '#49cc90' : '#ff4757'}; font-weight: 700; font-size: 16px; margin-bottom: 20px;">${p.stock > 0 ? `Stokta var (${p.stock} adet)` : '❌ Tükendi!'}</p>
         <button class="btn" style="width:100%; font-size: 18px; padding: 15px;" onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''}>🛒 Sepete Ekle</button>
     `;
     showScreen('screen-product-detail');
 }
 
-// --- SEPET VE SİPARİŞ ---
 function addToCart(id) {
     const p = products.find(prod => prod.id === id);
-    const countInCart = cart.filter(item => item.id === id).length;
-    
-    if (countInCart >= p.stock) return alert(`Hata: Stokta sadece ${p.stock} adet var.`);
-
-    cart.push(p);
-    updateCartBtn();
+    if (cart.filter(item => item.id === id).length >= p.stock) return alert(`Hata: Stokta sadece ${p.stock} adet var.`);
+    cart.push(p); updateCartBtn();
 }
 
 function showCart() {
     const container = document.getElementById('cart-items');
-    const totalEl = document.getElementById('cart-total');
     container.innerHTML = "";
-
     if (cart.length === 0) {
         container.innerHTML = "<p style='text-align:center; font-size: 16px; color: #666;'>Sepetiniz şu an boş.</p>";
-        totalEl.innerText = "Toplam: 0 TL";
-        showScreen('screen-cart');
-        return;
+        document.getElementById('cart-total').innerText = "Toplam: 0 TL";
+        showScreen('screen-cart'); return;
     }
-
     let total = 0;
     cart.forEach((item, index) => {
         total += item.price;
         container.innerHTML += `
             <div class="cart-item">
-                <div style="display:flex; align-items:center;">
-                    <img src="${item.img}" class="cart-item-img">
-                    <strong style="font-size: 15px;">${item.title}</strong>
-                </div>
-                <div style="display:flex; align-items:center;">
-                    <span style="font-weight:800; margin-right:20px; font-size:16px;">${item.price} TL</span>
-                    <button class="btn btn-outline" style="margin:0; padding:5px 15px; border-color: #ff4757; color: #ff4757;" onclick="removeFromCart(${index})">Sil</button>
-                </div>
-            </div>
-        `;
+                <div style="display:flex; align-items:center;"><img src="${item.img}" class="cart-item-img"><strong style="font-size: 15px;">${item.title}</strong></div>
+                <div style="display:flex; align-items:center;"><span style="font-weight:800; margin-right:20px; font-size:16px;">${item.price} TL</span><button class="btn btn-outline" style="margin:0; padding:5px 15px; border-color: #ff4757; color: #ff4757;" onclick="removeFromCart(${index})">Sil</button></div>
+            </div>`;
     });
-    totalEl.innerText = `Toplam: ${total} TL`;
+    document.getElementById('cart-total').innerText = `Toplam: ${total} TL`;
     showScreen('screen-cart');
 }
 
-function removeFromCart(index) {
-    cart.splice(index, 1);
-    updateCartBtn();
-    showCart();
-}
+function removeFromCart(index) { cart.splice(index, 1); updateCartBtn(); showCart(); }
+function updateCartBtn() { document.getElementById('cart-btn').innerText = `🛒 Sepet (${cart.length})`; }
 
-function updateCartBtn() {
-    document.getElementById('cart-btn').innerText = `🛒 Sepet (${cart.length})`;
-}
-
-// --- SİPARİŞ GEÇMİŞİ ---
+// --- GÜNCELLENMİŞ CHECKOUT: SİPARİŞİ HEM KULLANICIYA HEM ADMİNE KAYDET ---
 function checkout() {
     if (cart.length === 0) return alert("Sepetiniz boş!");
 
     const currentUser = localStorage.getItem("active_user");
-    let userOrders = JSON.parse(localStorage.getItem(`orders_${currentUser}`)) || [];
     let totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
 
     const newOrder = {
+        username: currentUser, // 👑 KİMİN ALDIĞINI KAYDEDİYORUZ
         date: new Date().toLocaleString('tr-TR'),
         items: [...cart],
         total: totalAmount
     };
 
+    // 1. Kullanıcının Kendi Sipariş Geçmişine Ekle
+    let userOrders = JSON.parse(localStorage.getItem(`orders_${currentUser}`)) || [];
     userOrders.push(newOrder);
     localStorage.setItem(`orders_${currentUser}`, JSON.stringify(userOrders));
 
+    // 2. ADMİN İÇİN GLOBAL SİPARİŞ HAVUZUNA EKLE (YENİ)
+    let allGlobalOrders = JSON.parse(localStorage.getItem("shopin_all_orders")) || [];
+    allGlobalOrders.push(newOrder);
+    localStorage.setItem("shopin_all_orders", JSON.stringify(allGlobalOrders));
+
+    // Stok Düşürme
     cart.forEach(cartItem => {
         const product = products.find(p => p.id === cartItem.id);
         if (product && product.stock > 0) product.stock -= 1;
     });
 
     alert("Sipariş başarıyla alındı! Geçmiş siparişlerinizi 'Hesabım' bölümünden görebilirsiniz.");
-    cart = []; 
-    updateCartBtn();
-    showScreen('screen-store');
-    renderProducts(); 
+    cart = []; updateCartBtn(); showScreen('screen-store'); renderProducts(); 
 }
 
+// --- GÜNCELLENMİŞ HESABIM EKRANI: ADMİN VE KULLANICI AYRIMI ---
 function showAccountScreen() {
     const currentUser = localStorage.getItem("active_user");
-    let userOrders = JSON.parse(localStorage.getItem(`orders_${currentUser}`)) || [];
     const container = document.getElementById('order-history-list');
-
+    const subtitle = document.getElementById('account-subtitle');
+    
     container.innerHTML = ""; 
+    let ordersToShow = [];
 
-    if (userOrders.length === 0) {
-        container.innerHTML = "<p style='color: #666;'>Henüz geçmiş siparişiniz bulunmamaktadır.</p>";
-    } else {
-        [...userOrders].reverse().forEach((order) => {
-            let itemsHtml = order.items.map(item => `
-                <li style="display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size: 14px; font-weight: 500;">
-                    <img src="${item.img}" style="width:40px; height:40px; object-fit:contain; border: 1px solid #eee; border-radius:4px;">
-                    ${item.title}
-                </li>
-            `).join('');
-            
-            container.innerHTML += `
-                <div style="border: 1px solid #eee; padding: 20px; margin-bottom: 20px; border-radius: 8px; text-align: left; background: #fafafa;">
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 15px;">
-                        <span style="font-weight: 600; color: #666; font-size: 14px;">${order.date}</span>
-                        <span style="font-weight: 900; font-size: 18px;">${order.total} TL</span>
+    // 👑 EĞER GİREN KİŞİ ADMİNSE: BÜTÜN SİPARİŞLERİ GETİR
+    if (currentUser === "Sistem Yöneticisi") {
+        subtitle.innerText = "🌐 Sistemdeki Tüm Müşteri Siparişleri";
+        ordersToShow = JSON.parse(localStorage.getItem("shopin_all_orders")) || [];
+        
+        if (ordersToShow.length === 0) {
+            container.innerHTML = "<p style='color: #666;'>Sistemde henüz hiç sipariş yok.</p>";
+        } else {
+            // Admin ekranında siparişleri listele
+            [...ordersToShow].reverse().forEach((order) => {
+                let itemsHtml = order.items.map(item => `
+                    <li style="display:flex; align-items:center; gap:10px; margin-bottom:5px; font-size: 14px;">
+                        <img src="${item.img}" style="width:30px; height:30px; object-fit:contain; border: 1px solid #eee;">
+                        ${item.title}
+                    </li>
+                `).join('');
+                
+                container.innerHTML += `
+                    <div style="border: 2px solid #000; padding: 20px; margin-bottom: 20px; border-radius: 8px; text-align: left; background: #fafafa;">
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 15px;">
+                            <div>
+                                <div style="font-weight: 900; color: #ff4757; font-size: 16px; margin-bottom: 5px; text-transform: uppercase;">👤 Müşteri: ${order.username}</div>
+                                <div style="font-weight: 600; color: #666; font-size: 12px;">🕒 ${order.date}</div>
+                            </div>
+                            <span style="font-weight: 900; font-size: 18px;">${order.total} TL</span>
+                        </div>
+                        <ul style="margin: 0; padding: 0; list-style:none;">${itemsHtml}</ul>
                     </div>
-                    <ul style="margin: 0; padding: 0; list-style:none;">
-                        ${itemsHtml}
-                    </ul>
-                </div>
-            `;
-        });
+                `;
+            });
+        }
+    } 
+    // 👤 EĞER GİREN KİŞİ NORMAL KULLANICIYSA: SADECE KENDİ SİPARİŞLERİNİ GETİR
+    else {
+        subtitle.innerText = "📦 Geçmiş Siparişlerim";
+        ordersToShow = JSON.parse(localStorage.getItem(`orders_${currentUser}`)) || [];
+        
+        if (ordersToShow.length === 0) {
+            container.innerHTML = "<p style='color: #666;'>Henüz geçmiş siparişiniz bulunmamaktadır.</p>";
+        } else {
+            [...ordersToShow].reverse().forEach((order) => {
+                let itemsHtml = order.items.map(item => `
+                    <li style="display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size: 14px; font-weight: 500;">
+                        <img src="${item.img}" style="width:40px; height:40px; object-fit:contain; border: 1px solid #eee; border-radius:4px;">
+                        ${item.title}
+                    </li>
+                `).join('');
+                
+                container.innerHTML += `
+                    <div style="border: 1px solid #eee; padding: 20px; margin-bottom: 20px; border-radius: 8px; text-align: left; background: #fafafa;">
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 15px;">
+                            <span style="font-weight: 600; color: #666; font-size: 14px;">${order.date}</span>
+                            <span style="font-weight: 900; font-size: 18px;">${order.total} TL</span>
+                        </div>
+                        <ul style="margin: 0; padding: 0; list-style:none;">${itemsHtml}</ul>
+                    </div>
+                `;
+            });
+        }
     }
     showScreen('screen-account');
 }

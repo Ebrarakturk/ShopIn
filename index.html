@@ -4,34 +4,21 @@
     <meta charset="UTF-8">
     <title>ShopIn | Premium Mağaza Girişi</title>
     <style>
-        /* 1. HATA BURADAYDI: overflow: hidden kilidini kaldırdık, artık aşağı kaydırılabilir */
         body { font-family: 'Poppins', sans-serif; background: #fafafa; margin: 0; text-align: center; color: #111; }
         .screen { display: none; padding: 50px 20px; min-height: 100vh; box-sizing: border-box;}
         .active-screen { display: block; }
         
-        /* 💎 PREMIUM KARŞILAMA EKRANI STİLİ */
         #screen-role { 
             background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
                               url('https://static.vecteezy.com/system/resources/previews/071/052/170/large_2x/modern-minimalist-clothing-store-interior-with-racks-of-apparel-and-display-tables-photo.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: #fff;
+            background-size: cover; background-position: center; background-repeat: no-repeat; color: #fff;
         }
         
-        /* 2. HATA BURADAYDI: Ekranların üst üste binmesini engelledik */
-        #screen-role.active-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
+        #screen-role.active-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; }
         #screen-role p { color: rgba(255, 255, 255, 0.8); font-size: 18px; margin-bottom: 30px; }
         .logo-landing { font-size: 32px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; color: #fff; margin-bottom: 20px; }
         .logo-landing span { background: #fff; color: #000; padding: 2px 10px; border-radius: 4px; margin-left: 4px; }
 
-        /* 💎 Premium Buton Tasarımı */
         .btn { padding: 12px 24px; margin: 10px; cursor: pointer; border: 2px solid #000; border-radius: 4px; background: #000; color: #fff; font-size: 16px; font-weight: 600; transition: all 0.3s ease; outline: none; position: relative; z-index: 10;}
         .btn:hover { background: #fff; color: #000; }
         
@@ -44,7 +31,6 @@
         input, select { padding: 12px; margin: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 15px; outline: none; }
         input:focus, select:focus { border-color: #000; }
         
-        /* 💎 Premium Navbar ve Ürünler */
         .navbar { background: #fff; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 1000; }
         .logo { font-size: 26px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; color: #000;}
         .logo span { background: #000; color: #fff; padding: 2px 8px; border-radius: 4px; margin-left: 2px; }
@@ -124,14 +110,16 @@
         <div class="navbar">
             <div class="logo">SHOP<span>IN</span></div>
             <div>
-                <button class="btn btn-outline" style="border-width: 1px;" onclick="showScreen('screen-store')">Alışverişe Dön</button>
+                <button class="btn btn-outline" style="border-width: 1px;" onclick="showScreen('screen-store')">Mağazaya Dön</button>
                 <button class="btn" onclick="logout()">Çıkış Yap</button>
             </div>
         </div>
         <br><br><br><br><br>
         <div style="max-width: 600px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; border: 1px solid #eee;">
             <h2 id="account-title" style="margin-top:0; border-bottom: 1px solid #eee; padding-bottom: 15px;">Hesap Detayları</h2>
-            <h3 style="text-align: left; margin-top: 25px;">📦 Geçmiş Siparişlerim</h3>
+            
+            <h3 id="account-subtitle" style="text-align: left; margin-top: 25px;">📦 Geçmiş Siparişlerim</h3>
+            
             <div id="order-history-list" style="margin-top: 15px;"></div>
         </div>
     </div>
