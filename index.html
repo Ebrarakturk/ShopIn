@@ -35,13 +35,18 @@
         .logo { font-size: 26px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; color: #000;}
         .logo span { background: #000; color: #fff; padding: 2px 8px; border-radius: 4px; margin-left: 2px; }
         
-        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .nav-right { display: flex; align-items: center; gap: 5px; }
         .nav-right button, .nav-right select, .nav-right input { margin: 0; }
         
-        .product-card { background:#fff; padding:20px; border-radius:8px; width:220px; border: 1px solid #eee; text-align:center; transition: transform 0.3s, box-shadow 0.3s; }
+        /* 💎 Ürün Kartı ve Kalp İkonu (YENİ) */
+        .product-card { position: relative; background:#fff; padding:20px; border-radius:8px; width:220px; border: 1px solid #eee; text-align:center; transition: transform 0.3s, box-shadow 0.3s; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         .product-img { width: 100%; height: 180px; object-fit: contain; margin-bottom: 15px; cursor: pointer; background: #fff; }
         
+        /* Favori Kalp Stili */
+        .heart-icon { position: absolute; top: 15px; right: 15px; font-size: 24px; cursor: pointer; transition: transform 0.2s; z-index: 5; user-select: none; }
+        .heart-icon:hover { transform: scale(1.2); }
+
         .cart-item { display:flex; justify-content:space-between; align-items:center; background:#fff; padding:15px; margin-bottom:10px; border-radius:8px; border: 1px solid #eee; }
         .cart-item-img { width: 60px; height: 60px; object-fit: contain; border-radius: 5px; margin-right: 15px; background: #fff; }
     </style>
@@ -77,6 +82,7 @@
                     <option value="Kitap">Kitap</option>
                     <option value="Ev Aletleri">Ev Aletleri</option>
                 </select>
+                <button class="btn btn-outline" style="border-width: 1px; color: #ff4757; border-color: #eee;" onclick="showFavorites()">🤍 Favorilerim</button>
                 <button id="cart-btn" class="btn" onclick="showCart()">🛒 Sepet (0)</button>
                 <button class="btn btn-outline" style="border-width: 1px;" onclick="showAccountScreen()">👤 Hesabım</button>
             </div>
@@ -117,11 +123,19 @@
         <br><br><br><br><br>
         <div style="max-width: 600px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; border: 1px solid #eee;">
             <h2 id="account-title" style="margin-top:0; border-bottom: 1px solid #eee; padding-bottom: 15px;">Hesap Detayları</h2>
-            
             <h3 id="account-subtitle" style="text-align: left; margin-top: 25px;">📦 Geçmiş Siparişlerim</h3>
-            
             <div id="order-history-list" style="margin-top: 15px;"></div>
         </div>
+    </div>
+
+    <div id="screen-favorites" class="screen" style="padding: 0;">
+        <div class="navbar">
+            <div class="logo">SHOP<span>IN</span></div>
+            <button class="btn btn-outline" style="border-width: 1px;" onclick="showScreen('screen-store')">Mağazaya Dön</button>
+        </div>
+        <br><br><br><br><br>
+        <h2 style="font-weight: 600;">🤍 Favori Ürünlerim</h2>
+        <div id="favorites-grid" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px; max-width: 1200px; margin: auto;"></div>
     </div>
 
     <script src="script.js"></script>

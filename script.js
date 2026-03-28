@@ -47,7 +47,6 @@ function showAuth(role) {
 
 function register() {
     if (currentRole === 'admin') return alert("⛔ Sistem Uyarısı: Yeni yönetici hesabı oluşturulamaz!");
-
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
     if (!user || !pass) return alert("Kullanıcı adı ve şifre boş bırakılamaz!");
@@ -95,14 +94,52 @@ function logout() {
     showScreen('screen-role');
 }
 
+// --- FAVORİLER VERİTABANI VE YÖNETİMİ (YENİ) ---
+function getFavorites() {
+    const currentUser = localStorage.getItem("active_user");
+    return JSON.parse(localStorage.getItem(`favs_${currentUser}`)) || [];
+}
+
+function toggleFavorite(id) {
+    const currentUser = localStorage.getItem("active_user");
+    if (!currentUser) return; // Giriş yapmamışsa işlem yapma
+
+    let favs = getFavorites();
+    const index = favs.indexOf(id);
+    
+    if (index === -1) {
+        favs.push(id); // Listede yoksa ekle
+    } else {
+        favs.splice(index, 1); // Listede varsa çıkar
+    }
+    
+    localStorage.setItem(`favs_${currentUser}`, JSON.stringify(favs));
+    
+    // Ekranda değişiklikleri anında göster
+    renderProducts(); 
+    
+    // Eğer şu an favoriler ekranındaysa orayı da güncelle
+    if (document.getElementById('screen-favorites').classList.contains('active-screen')) {
+        showFavorites();
+    }
+}
+
+// --- MAĞAZA VE ÜRÜNLER (Kalp İkonları Eklendi) ---
 function renderProducts(list = products) {
     const grid = document.getElementById('products-grid');
     grid.innerHTML = ""; 
     if (list.length === 0) return grid.innerHTML = "<h3 style='width:100%;'>Aradığınız kriterde ürün bulunamadı.</h3>";
 
+    const currentFavs = getFavorites(); // Kullanıcının favorilerini çek
+
     list.forEach(p => {
+        // Ürün favorilerdeyse kırmızı kalp (❤️), değilse beyaz kalp (🤍) göster
+        const isFav = currentFavs.includes(p.id);
+        const heartSymbol = isFav ? "❤️" : "🤍";
+
         grid.innerHTML += `
             <div class="product-card">
+                <div class="heart-icon" onclick="toggleFavorite(${p.id})">${heartSymbol}</div>
                 <img src="${p.img}" alt="${p.title}" class="product-img" onclick="showProductDetail(${p.id})">
                 <h3 style="margin:5px 0; font-size:16px; font-weight:600;">${p.title}</h3>
                 <p style="font-weight:800; font-size:18px; margin: 5px 0;">${p.price} TL</p>
@@ -121,6 +158,34 @@ function filterProducts() {
     renderProducts(filtered);
 }
 
+// --- FAVORİLER EKRANINI GÖSTERME (YENİ) ---
+function showFavorites() {
+    const favs = getFavorites();
+    const grid = document.getElementById('favorites-grid');
+    grid.innerHTML = "";
+
+    if (favs.length === 0) {
+        grid.innerHTML = "<p style='color: #666; font-size: 16px; width:100%;'>Henüz favorilere eklediğiniz bir ürün bulunmamaktadır.</p>";
+    } else {
+        const favProducts = products.filter(p => favs.includes(p.id));
+        
+        favProducts.forEach(p => {
+            grid.innerHTML += `
+                <div class="product-card">
+                    <div class="heart-icon" onclick="toggleFavorite(${p.id})">❤️</div>
+                    <img src="${p.img}" alt="${p.title}" class="product-img" onclick="showProductDetail(${p.id})">
+                    <h3 style="margin:5px 0; font-size:16px; font-weight:600;">${p.title}</h3>
+                    <p style="font-weight:800; font-size:18px; margin: 5px 0;">${p.price} TL</p>
+                    <button class="btn btn-outline" style="width:100%; margin:0 0 8px 0;" onclick="showProductDetail(${p.id})">Detay İncele</button>
+                    <button class="btn" style="width:100%; margin:0;" onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''}>Sepete Ekle</button>
+                </div>
+            `;
+        });
+    }
+    showScreen('screen-favorites');
+}
+
+// --- ÜRÜN DETAY SAYFASI ---
 function showProductDetail(id) {
     const p = products.find(prod => prod.id === id);
     document.getElementById('product-detail-content').innerHTML = `
@@ -136,6 +201,7 @@ function showProductDetail(id) {
     showScreen('screen-product-detail');
 }
 
+// --- SEPET VE SİPARİŞ ---
 function addToCart(id) {
     const p = products.find(prod => prod.id === id);
     if (cart.filter(item => item.id === id).length >= p.stock) return alert(`Hata: Stokta sadece ${p.stock} adet var.`);
@@ -166,31 +232,22 @@ function showCart() {
 function removeFromCart(index) { cart.splice(index, 1); updateCartBtn(); showCart(); }
 function updateCartBtn() { document.getElementById('cart-btn').innerText = `🛒 Sepet (${cart.length})`; }
 
-// --- GÜNCELLENMİŞ CHECKOUT: SİPARİŞİ HEM KULLANICIYA HEM ADMİNE KAYDET ---
 function checkout() {
     if (cart.length === 0) return alert("Sepetiniz boş!");
 
     const currentUser = localStorage.getItem("active_user");
     let totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
 
-    const newOrder = {
-        username: currentUser, // 👑 KİMİN ALDIĞINI KAYDEDİYORUZ
-        date: new Date().toLocaleString('tr-TR'),
-        items: [...cart],
-        total: totalAmount
-    };
+    const newOrder = { username: currentUser, date: new Date().toLocaleString('tr-TR'), items: [...cart], total: totalAmount };
 
-    // 1. Kullanıcının Kendi Sipariş Geçmişine Ekle
     let userOrders = JSON.parse(localStorage.getItem(`orders_${currentUser}`)) || [];
     userOrders.push(newOrder);
     localStorage.setItem(`orders_${currentUser}`, JSON.stringify(userOrders));
 
-    // 2. ADMİN İÇİN GLOBAL SİPARİŞ HAVUZUNA EKLE (YENİ)
     let allGlobalOrders = JSON.parse(localStorage.getItem("shopin_all_orders")) || [];
     allGlobalOrders.push(newOrder);
     localStorage.setItem("shopin_all_orders", JSON.stringify(allGlobalOrders));
 
-    // Stok Düşürme
     cart.forEach(cartItem => {
         const product = products.find(p => p.id === cartItem.id);
         if (product && product.stock > 0) product.stock -= 1;
@@ -200,7 +257,6 @@ function checkout() {
     cart = []; updateCartBtn(); showScreen('screen-store'); renderProducts(); 
 }
 
-// --- GÜNCELLENMİŞ HESABIM EKRANI: ADMİN VE KULLANICI AYRIMI ---
 function showAccountScreen() {
     const currentUser = localStorage.getItem("active_user");
     const container = document.getElementById('order-history-list');
@@ -209,7 +265,6 @@ function showAccountScreen() {
     container.innerHTML = ""; 
     let ordersToShow = [];
 
-    // 👑 EĞER GİREN KİŞİ ADMİNSE: BÜTÜN SİPARİŞLERİ GETİR
     if (currentUser === "Sistem Yöneticisi") {
         subtitle.innerText = "🌐 Sistemdeki Tüm Müşteri Siparişleri";
         ordersToShow = JSON.parse(localStorage.getItem("shopin_all_orders")) || [];
@@ -217,7 +272,6 @@ function showAccountScreen() {
         if (ordersToShow.length === 0) {
             container.innerHTML = "<p style='color: #666;'>Sistemde henüz hiç sipariş yok.</p>";
         } else {
-            // Admin ekranında siparişleri listele
             [...ordersToShow].reverse().forEach((order) => {
                 let itemsHtml = order.items.map(item => `
                     <li style="display:flex; align-items:center; gap:10px; margin-bottom:5px; font-size: 14px;">
@@ -225,14 +279,10 @@ function showAccountScreen() {
                         ${item.title}
                     </li>
                 `).join('');
-                
                 container.innerHTML += `
                     <div style="border: 2px solid #000; padding: 20px; margin-bottom: 20px; border-radius: 8px; text-align: left; background: #fafafa;">
                         <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 15px;">
-                            <div>
-                                <div style="font-weight: 900; color: #ff4757; font-size: 16px; margin-bottom: 5px; text-transform: uppercase;">👤 Müşteri: ${order.username}</div>
-                                <div style="font-weight: 600; color: #666; font-size: 12px;">🕒 ${order.date}</div>
-                            </div>
+                            <div><div style="font-weight: 900; color: #ff4757; font-size: 16px; margin-bottom: 5px; text-transform: uppercase;">👤 Müşteri: ${order.username}</div><div style="font-weight: 600; color: #666; font-size: 12px;">🕒 ${order.date}</div></div>
                             <span style="font-weight: 900; font-size: 18px;">${order.total} TL</span>
                         </div>
                         <ul style="margin: 0; padding: 0; list-style:none;">${itemsHtml}</ul>
@@ -240,9 +290,7 @@ function showAccountScreen() {
                 `;
             });
         }
-    } 
-    // 👤 EĞER GİREN KİŞİ NORMAL KULLANICIYSA: SADECE KENDİ SİPARİŞLERİNİ GETİR
-    else {
+    } else {
         subtitle.innerText = "📦 Geçmiş Siparişlerim";
         ordersToShow = JSON.parse(localStorage.getItem(`orders_${currentUser}`)) || [];
         
@@ -256,7 +304,6 @@ function showAccountScreen() {
                         ${item.title}
                     </li>
                 `).join('');
-                
                 container.innerHTML += `
                     <div style="border: 1px solid #eee; padding: 20px; margin-bottom: 20px; border-radius: 8px; text-align: left; background: #fafafa;">
                         <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 15px;">
