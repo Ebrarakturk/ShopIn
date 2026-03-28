@@ -11,12 +11,26 @@ function ismailProductDetail(id) {
     alert("Ürün Detayı: ShopIn Özel Koleksiyon Ürünü.");
 }
 
-// 3. Kullanıcı Kayıt (RE-03)
+/// 3. Kullanıcı Kayıt (RE-03) - Mükerrer Kontrolü Eklendi
 function ismailRegister() {
     const name = prompt("Kayıt için isim giriniz:");
-    if(name) {
-        logIsmail(`POST /users/register: ${name} kullanıcısı oluşturuldu. (RE-03)`);
-        alert(`Kayıt Başarılı! Hoş geldin ${name}.`);
+    
+    if (name) {
+        // Tarayıcı hafızasından mevcut listeyi çek (yoksa boş liste oluştur)
+        let savedUsers = JSON.parse(localStorage.getItem("shopin_users")) || [];
+
+        // Küçük/Büyük harf duyarlılığını kaldırmak için ismi küçültüp kontrol et
+        if (savedUsers.includes(name.toLowerCase())) {
+            logIsmail(`HATA: '${name}' zaten kayıtlı! (RE-03)`);
+            alert(`Hata: '${name}' ismiyle zaten bir kaydınız var. Lütfen başka bir isim deneyin.`);
+        } else {
+            // Listeye ekle ve hafızaya geri kaydet
+            savedUsers.push(name.toLowerCase());
+            localStorage.setItem("shopin_users", JSON.stringify(savedUsers));
+
+            logIsmail(`POST /users/register: ${name} başarıyla oluşturuldu. (RE-03)`);
+            alert(`Kayıt Başarılı! Hoş geldin ${name}.`);
+        }
     }
 }
 
