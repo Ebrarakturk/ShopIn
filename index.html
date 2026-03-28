@@ -2,131 +2,60 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopIn | Canlı Mağaza & API Paneli</title>
+    <title>ShopIn | Modern E-Ticaret</title>
     <style>
-        :root { --main-color: #2b2b2b; --accent-color: #ff4757; --bg-color: #f8f9fa; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; padding: 0; color: var(--main-color); }
-        
-        /* Navbar - Shopier Style */
-        .navbar { background: white; padding: 15px 8%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 28px; font-weight: 800; color: var(--main-color); letter-spacing: -1px; text-transform: lowercase; }
-        .nav-links { display: flex; gap: 10px; align-items: center; }
-        .nav-links button { background: none; border: 1px solid #ddd; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: 500; font-size: 13px; transition: all 0.2s; }
-        .nav-links button:hover { border-color: var(--main-color); background: #f0f0f0; }
-
-        /* Hero & Filters */
-        .hero { padding: 40px 8% 20px; display: flex; justify-content: space-between; align-items: center; }
-        .hero h2 { font-weight: 700; font-size: 24px; margin: 0; }
-        .filter-select { padding: 10px 15px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-size: 13px; cursor: pointer; }
-
-        /* Product Grid */
-        .products-container { padding: 0 8% 50px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-        .product-card { background: white; border-radius: 15px; overflow: hidden; transition: all 0.3s ease; position: relative; border: 1px solid #eee; display: flex; flex-direction: column; justify-content: space-between; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-        .product-img { width: 100%; height: 220px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #aaa; font-weight: 600; font-size: 14px; }
-        .product-info { padding: 25px; flex-grow: 1; }
-        .product-title { font-weight: 600; font-size: 17px; margin-bottom: 8px; }
-        .product-price { color: var(--accent-color); font-weight: 800; font-size: 20px; }
-        .stock-tag { font-size: 12px; background: #e1f5fe; color: #039be5; padding: 4px 10px; border-radius: 12px; margin-top: 12px; display: inline-block; font-weight: 500; }
-
-        /* Action Buttons */
-        .add-btn { width: 100%; background: var(--main-color); color: white; border: none; padding: 14px; border-radius: 10px; margin-top: 20px; cursor: pointer; font-weight: 700; font-size: 14px; transition: background 0.2s; }
-        .add-btn:hover { background: #000; }
-
-        /* Admin/Debug Panel (Şık ve Gizlenebilir) */
-        .debug-panel { position: fixed ; bottom: 20px; right: 20px; width: 320px; background: #1a1a1a; color: #00ff41; padding: 18px; border-radius: 12px; font-family: 'Courier New', monospace; font-size: 11px; max-height: 220px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 2000; border: 1px solid #333; }
-        .method-tag { font-size: 9px; padding: 2px 5px; border-radius: 3px; color: white; margin-right: 5px; font-weight: bold; }
-        .get { background: #61affe; } .post { background: #49cc90; } .put { background: #fca130; } .delete { background: #f93e3e; }
+        body { font-family: 'Poppins', sans-serif; background: #f8f9fa; margin: 0; text-align: center; }
+        .screen { display: none; padding: 50px 20px; }
+        .active-screen { display: block; }
+        .btn { padding: 10px 20px; margin: 10px; cursor: pointer; border: none; border-radius: 5px; background: #2b2b2b; color: white; font-size: 16px; }
+        .btn:hover { background: #ff4757; }
+        input { padding: 10px; margin: 5px; width: 200px; border-radius: 5px; border: 1px solid #ccc; }
+        /* Navbar Stili */
+        .navbar { background: white; padding: 15px; display: flex; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .nav-right button { margin-left: 10px; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">ShopIn</div>
-        
-        <div class="nav-links">
-            <div id="guest-menu">
-                <button onclick="ismailLogin()">Giriş Yap</button>
-                <button onclick="ismailRegister()" style="background: var(--main); color: white;">Kayıt Ol</button>
-            </div>
-            
-            <div id="user-menu" style="display: none; align-items: center;">
-                <span id="auth-tag" style="font-size: 15px; font-weight: bold; margin-right: 15px; color: var(--main);"></span>
-                <button onclick="ismailLogout()" style="border: 1px solid #ff4757; color: #ff4757;">Çıkış Yap</button>
-            </div>
-        </div>    
-
-    <div class="hero">
-        <h2>Kataloğu Keşfet</h2>
-        
-        <select class="filter-select" onchange="ebrarFilter()"> <option>Tüm Kategoriler</option>
-            <option>Elektronik</option>
-            <option>Giyim</option>
-            <option>Kitap</option>
-        </select>
+    <div id="screen-role" class="screen active-screen">
+        <h2>ShopIn'e Hoş Geldiniz</h2>
+        <p>Lütfen giriş türünüzü seçin:</p>
+        <button class="btn" onclick="showAuth('user')">Kullanıcı Girişi</button>
+        <button class="btn" onclick="showAuth('admin')">Yönetici Girişi</button>
     </div>
 
-    <div class="products-container" id="product-list">
-        
-        <div class="product-card">
-            <div class="product-img">Elektronik</div>
-            <div class="product-info">
-                <div class="product-title">Akıllı Saat v2</div>
-                <div class="product-price">2.499 TL</div>
-                <div class="stock-tag">Stok Durumu: 12 Adet (RE-01)</div>
-                
-                <button class="add-btn" onclick="ebrarAddCart()">Sepete Ekle</button> <div style="margin-top:12px; display:flex; gap:8px;">
-                    <button onclick="ismailProductDetail('1')" style="flex:1; font-size:11px; padding: 6px;">Detay Gör</button>
-                    <button onclick="ebrarDeleteProduct('1')" style="color:var(--accent-color); border-color: #ffcccc; font-size:11px; padding: 6px;">Sil</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <div class="product-img">Giyim</div>
-            <div class="product-info">
-                <div class="product-title">Klasik Deri Ceket</div>
-                <div class="product-price">1.850 TL</div>
-                <div class="stock-tag">Stok Durumu: 4 Adet</div>
-                <button class="add-btn" onclick="ebrarAddCart()">Sepete Ekle</button>
-                <div style="margin-top:12px; display:flex; gap:8px;">
-                    <button onclick="ismailProductDetail('2')" style="flex:1; font-size:11px; padding: 6px;">Detay Gör</button>
-                    <button onclick="ebrarDeleteProduct('2')" style="color:var(--accent-color); border-color: #ffcccc; font-size:11px; padding: 6px;">Sil</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <div class="product-img">Elektronik</div>
-            <div class="product-info">
-                <div class="product-title">Kablosuz Kulaklık (ANC)</div>
-                <div class="product-price">3.200 TL</div>
-                <div class="stock-tag">Stok Durumu: 25 Adet</div>
-                <button class="add-btn" onclick="ebrarAddCart()">Sepete Ekle</button>
-                <div style="margin-top:12px; display:flex; gap:8px;">
-                    <button onclick="ismailProductDetail('3')" style="flex:1; font-size:11px; padding: 6px;">Detay Gör</button>
-                    <button onclick="ebrarDeleteProduct('3')" style="color:var(--accent-color); border-color: #ffcccc; font-size:11px; padding: 6px;">Sil</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" style="background:#f4f4f4; border: 2px dashed #ccc; justify-content: center; align-items: center; padding: 20px;">
-            <div style="text-align:center; color:#666;">
-                <b>Yönetici Araçları (RE-06, RE-08)</b>
-                <button onclick="ebrarAddProduct()" style="margin-top:15px; font-size:12px; width:100%;">+ Yeni Ürün Ekle (POST)</button>
-                <button onclick="ebrarUpdateOrder()" style="margin-top:8px; font-size:12px; width:100%;">🔄 Sipariş Durumu Güncelle (PUT)</button>
-            </div>
-        </div>
-
+    <div id="screen-auth" class="screen">
+        <h2 id="auth-title">Giriş Yap / Kayıt Ol</h2>
+        <input type="text" id="username" placeholder="Kullanıcı Adı"><br>
+        <input type="password" id="password" placeholder="Şifre"><br>
+        <button class="btn" onclick="login()">Giriş Yap</button>
+        <button class="btn" onclick="register()">Kayıt Ol</button>
+        <br><br>
+        <button class="btn" style="background:gray;" onclick="showScreen('screen-role')">Geri Dön</button>
     </div>
 
-    <div class="debug-panel" id="debug-log">
-        <b>> ShopIn API Logs</b>
-        <div id="log-content"><br>Sistem aktif...</div>
+    <div id="screen-store" class="screen">
+        <div class="navbar">
+            <h2 style="margin:0;">ShopIn</h2>
+            <div class="nav-right">
+                <input type="text" placeholder="Ürün Ara...">
+                <button class="btn">Ara</button>
+                <select class="btn" style="background:white; color:black;"><option>Tüm Kategoriler</option></select>
+                <button class="btn">🛒 Sepet (0)</button>
+                <button class="btn" onclick="showScreen('screen-account')" style="background:#ff4757;">👤 Hesabım</button>
+            </div>
+        </div>
+        <br>
+        <h3>Ürünler Yükleniyor...</h3>
+    </div>
+
+    <div id="screen-account" class="screen">
+        <h2>Hesap Detayları</h2>
+        <button class="btn">📦 Geçmiş Siparişlerim</button>
+        <button class="btn" onclick="showScreen('screen-store')">Alışverişe Dön</button>
+        <button class="btn" onclick="logout()" style="background:red;">Çıkış Yap</button>
     </div>
 
     <script src="script.js"></script>
-    <script src="ismail.js"></script>
 </body>
 </html>
