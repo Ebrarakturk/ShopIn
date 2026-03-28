@@ -2,70 +2,70 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>ShopIn | Teknik Gereksinim Paneli</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopIn | API Integration Panel</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
-        .navbar { background-color: #232f3e; color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 26px; font-weight: bold; color: #ff9900; }
+        :root { --shopin-blue: #232f3e; --shopin-orange: #febd69; --shopin-dark: #131921; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f3f3f3; margin: 0; padding: 0; }
+        .navbar { background-color: var(--shopin-dark); color: white; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 26px; font-weight: bold; color: var(--shopin-orange); letter-spacing: 1px; }
         
-        /* Gereksinim 2: Ürün Filtreleme Bölümü */
-        .filter-bar { background: #fff; padding: 15px 5%; border-bottom: 1px solid #ddd; display: flex; gap: 10px; align-items: center; }
-        .filter-input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 250px; }
-        .filter-btn { background: #ff9900; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-
-        /* Ana İçerik */
-        .container { padding: 20px 5%; }
-        .section-title { color: #333; border-bottom: 2px solid #ff9900; padding-bottom: 10px; margin-bottom: 20px; }
-
-        /* Ürün Kartları */
-        #product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .product-card { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
-        .product-name { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
-        .stock-tag { font-size: 12px; color: #27ae60; font-weight: bold; margin-bottom: 15px; } /* Gereksinim 1: Stok Görüntüleme */
-
-        /* Butonlar (Tıklanabilir ve Teknik İsimli) */
-        .btn { border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 5px; font-size: 12px; }
-        .add-cart-btn { background: #f0c14b; border: 1px solid #a88734; } /* Gereksinim 3 */
-        .delete-btn { background: #ffeded; color: #c40000; border: 1px solid #ffb2b2; } /* Gereksinim 7 */
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; padding: 25px 5%; }
+        .panel { background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 25px; border-top: 5px solid var(--shopin-blue); }
+        .panel-title { font-size: 20px; font-weight: bold; color: var(--shopin-blue); margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         
-        /* Yönetici Paneli Gereksinimleri (Alt Kısım) */
-        .admin-panel { background: #fff; border: 2px solid #232f3e; border-radius: 8px; padding: 20px; margin-top: 40px; }
-        .admin-grid { display: flex; gap: 15px; flex-wrap: wrap; }
-        .admin-btn { background: #232f3e; color: white; } /* Gereksinim 6 & 8 */
-
-        /* Siparişler Bölümü */
-        #order-list { margin-top: 20px; background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd; }
+        /* Kurumsal Butonlar */
+        .btn { display: block; width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #adb1b8; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s ease; text-align: left; background: #e7e9ec; }
+        .btn-primary { background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border-color: #a88734; }
+        .btn:hover { border-color: #000; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transform: translateY(-1px); }
+        
+        #console-output { background: #1a1a1a; color: #00ff41; padding: 20px; margin: 0 5% 30px; border-radius: 8px; height: 150px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; }
+        .method-tag { font-size: 10px; padding: 2px 6px; border-radius: 3px; margin-right: 8px; vertical-align: middle; color: white; }
+        .get { background: #61affe; } .post { background: #49cc90; } .put { background: #fca130; } .delete { background: #f93e3e; }
     </style>
 </head>
 <body>
 
     <div class="navbar">
         <div class="logo">ShopIn</div>
-        <div onclick="listOrders()" style="cursor:pointer;">📦 Sipariş Geçmişini Listele (GET /orders)</div> </div>
-
-    <div class="filter-bar">
-        <input type="text" id="filter-input" class="filter-input" placeholder="Kategori veya isim yazın...">
-        <button class="filter-btn" onclick="filterProducts()">Filtrele (GET /products?filter=...)</button>
+        <div style="font-size: 13px; opacity: 0.8;">Technical Requirements Overview v1.0</div>
     </div>
 
-    <div class="container">
-        <h2 class="section-title">Canlı Ürün Listesi</h2>
-        <div id="product-grid">
-            <p>Ürünler yükleniyor...</p>
+    <div class="main-grid">
+        
+        <div class="panel">
+            <div class="panel-title">Müşteri ve Satış Fonksiyonları</div>
+            <button class="btn btn-primary" onclick="ebrarGetStock()"><span class="method-tag get">GET</span> Ürün Stok Görüntüleme</button>
+            <button class="btn btn-primary" onclick="ebrarFilter()"><span class="method-tag get">GET</span> Gelişmiş Ürün Filtreleme</button>
+            <button class="btn btn-primary" onclick="ebrarAddToCart()"><span class="method-tag post">POST</span> Sepete Ürün Kaydı</button>
+            <button class="btn btn-primary" onclick="ebrarCreateOrder()"><span class="method-tag post">POST</span> Yeni Sipariş Oluşturma</button>
+            <button class="btn btn-primary" onclick="ebrarListOrders()"><span class="method-tag get">GET</span> Kullanıcı Sipariş Geçmişi</button>
+            <button class="btn btn-primary" onclick="ebrarAddProduct()"><span class="method-tag post">POST</span> Katalog Ürün Ekleme</button>
+            <button class="btn btn-primary" onclick="ebrarDeleteProduct()"><span class="method-tag delete">DEL</span> Katalog Ürün Silme</button>
+            <button class="btn btn-primary" onclick="ebrarUpdateOrder()"><span class="method-tag put">PUT</span> Sipariş Durum Güncelleme</button>
         </div>
 
-        <div class="admin-panel">
-            <h3 style="margin-top:0;">Yönetici ve İşlem Araçları</h3>
-            <div class="admin-grid">
-                <button class="btn admin-btn" onclick="addProduct()">+ Yeni Ürün Ekle (POST /products)</button> <button class="btn admin-btn" onclick="createOrder()">🛒 Sipariş Oluştur (POST /orders)</button> <button class="btn admin-btn" onclick="updateOrderStatus()">🔄 Sipariş Durumu Güncelle (PUT /orders/id)</button> </div>
+        <div class="panel">
+            <div class="panel-title">Kullanıcı ve Sistem Yönetimi</div>
+            <button class="btn" onclick="ismailListProducts()"><span class="method-tag get">GET</span> Katalog Genel Listeleme</button>
+            <button class="btn" onclick="ismailProductDetail()"><span class="method-tag get">GET</span> Ürün Detay Sorgulama</button>
+            <button class="btn" onclick="ismailRegister()"><span class="method-tag post">POST</span> Sistem Kullanıcı Kaydı</button>
+            <button class="btn" onclick="ismailLogin()"><span class="method-tag post">POST</span> Kullanıcı Kimlik Doğrulama</button>
+            <button class="btn" onclick="ismailGetCart()"><span class="method-tag get">GET</span> Aktif Sepet Listeleme</button>
+            <button class="btn" onclick="ismailDeleteCart()"><span class="method-tag delete">DEL</span> Sepet İçeriği Kaldırma</button>
+            <button class="btn" onclick="ismailUpdateProduct()"><span class="method-tag put">PUT</span> Ürün Verisi Güncelleme</button>
+            <button class="btn" onclick="ismailListAllOrders()"><span class="method-tag get">GET</span> Sistem Sipariş Listesi</button>
         </div>
 
-        <div id="order-container" style="display:none;">
-            <h3 class="section-title">Sipariş Kayıtları</h3>
-            <div id="order-list"></div>
-        </div>
+    </div>
+
+    <div id="console-output">
+        <b>> ShopIn API Terminal</b>
+        <div id="log-content"><br>Bağlantı başarılı. Sistem komut bekliyor...</div>
     </div>
 
     <script src="script.js"></script>
+    <script src="ismail.js"></script>
+
 </body>
 </html>
