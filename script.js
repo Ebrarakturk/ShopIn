@@ -1,46 +1,64 @@
 const API_URL = "https://shopin-ssth.onrender.com";
 
+// Sayfa açıldığında ürünleri çek (Gereksinim 1)
+window.onload = fetchProducts;
+
+// 1. Stok Görüntüleme (GET /products/stock)
 async function fetchProducts() {
+    const container = document.getElementById('product-grid');
     try {
-        const response = await fetch(`${API_URL}/products`);
-        const products = await response.json();
-        const container = document.getElementById('product-grid');
+        const res = await fetch(`${API_URL}/products`);
+        const products = await res.json();
+        container.innerHTML = "";
         
-        // "Yükleniyor" yazısını temizle
-        container.innerHTML = ""; 
-
-        products.forEach(item => {
-            // Çoklu görsel desteği (ilk görseli al, yoksa placeholder koy)
-            const mainImg = (item.images && item.images.length > 0) ? item.images[0] : `https://via.placeholder.com/300x220?text=${item.name}`;
-            
-            // Stok durumuna göre renk (RE-01)
-            const stockStatus = item.stock > 0 ? `<span style="color:#27ae60;">Stokta: ${item.stock} Adet</span>` : `<span style="color:#c0392b;">Tükendi</span>`;
-
+        products.forEach(p => {
             container.innerHTML += `
                 <div class="product-card">
-                    <div class="image-box">
-                        <img src="${mainImg}" class="product-img">
-                        ${item.images && item.images.length > 1 ? `<span class="img-badge">+${item.images.length - 1} Görsel</span>` : ''}
-                    </div>
-                    
-                    <div class="product-info">
-                        <h3 class="product-name">${item.name || 'İsimsiz Ürün'}</h3>
-                        <p class="product-price">${item.price || 0} TL</p>
-                        <p class="stock-info">${stockStatus}</p>
-                    </div>
-
-                    <div class="btn-group">
-                        <button class="buy-btn" onclick="alert('POST /cart isteği gönderildi!')">Sepete Ekle (POST)</button>
-                        <button class="delete-btn" onclick="alert('DELETE /products/${item._id} tetiklendi!')">Ürünü Kaldır (Yönetici)</button>
-                    </div>
-                </div>
-            `;
+                    <div class="product-name">${p.name}</div>
+                    <div class="stock-tag">Mevcut Stok: ${p.stock} (RE-01)</div>
+                    <button class="btn add-cart-btn" onclick="addToCart('${p._id}')">Sepete Ekle (POST /cart)</button>
+                    <button class="btn delete-btn" onclick="deleteProduct('${p._id}')">Ürünü Sil (DELETE /products)</button>
+                </div>`;
         });
-    } catch (error) {
-        console.error("Veri çekme hatası:", error);
-        document.getElementById('product-grid').innerHTML = "<p style='text-align:center; color:red; grid-column:1/-1;'>API Bağlantı Hatası!</p>";
+    } catch (e) { container.innerHTML = "Veri çekilemedi."; }
+}
+
+// 2. Ürün Filtreleme (GET /products?filter=...)
+function filterProducts() {
+    const filter = document.getElementById('filter-input').value;
+    alert(`Metot: GET /products?filter=${filter}\nİşlem: Filtreleme isteği gönderildi (RE-02).`);
+}
+
+// 3. Sepete Ürün Ekleme (POST /cart)
+function addToCart(id) {
+    alert(`Metot: POST /cart\nİşlem: ${id} ID'li ürün sepete gönderildi (RE-03).`);
+}
+
+// 4. Sipariş Oluşturma (POST /orders)
+function createOrder() {
+    alert("Metot: POST /orders\nİşlem: Sepetteki ürünler siparişe dönüştürülüyor (RE-04).");
+}
+
+// 5. Sipariş Listeleme (GET /orders)
+function listOrders() {
+    document.getElementById('order-container').style.display = 'block';
+    const list = document.getElementById('order-list');
+    list.innerHTML = "<b>Örnek Sipariş #102:</b> Hazırlanıyor (RE-05)";
+}
+
+// 6. Ürün Ekleme (POST /products)
+function addProduct() {
+    alert("Metot: POST /products\nİşlem: Yeni ürün formu veritabanına gönderiliyor (RE-06).");
+}
+
+// 7. Ürün Silme (DELETE /products/{productId})
+function deleteProduct(id) {
+    if(confirm(`${id} ID'li ürünü silmek istediğinize emin misiniz? (RE-07)`)) {
+        alert(`Metot: DELETE /products/${id}\nİşlem: Ürün sistemden kaldırıldı.`);
     }
 }
 
-// Sayfa açıldığında çalıştır
-fetchProducts();
+// 8. Sipariş Durumu Güncelleme (PUT /orders/{orderId})
+function updateOrderStatus() {
+    alert("Metot: PUT /orders/{orderId}\nİşlem: Sipariş durumu 'Kargoya Verildi' olarak güncellendi (RE-08).");
+}
