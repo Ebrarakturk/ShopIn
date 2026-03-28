@@ -1,64 +1,64 @@
-const API_URL = "https://shopin-ssth.onrender.com";
+let currentRole = "";
 
-// Sayfa açıldığında ürünleri çek (Gereksinim 1)
-window.onload = fetchProducts;
-
-// 1. Stok Görüntüleme (GET /products/stock)
-async function fetchProducts() {
-    const container = document.getElementById('product-grid');
-    try {
-        const res = await fetch(`${API_URL}/products`);
-        const products = await res.json();
-        container.innerHTML = "";
-        
-        products.forEach(p => {
-            container.innerHTML += `
-                <div class="product-card">
-                    <div class="product-name">${p.name}</div>
-                    <div class="stock-tag">Mevcut Stok: ${p.stock} (RE-01)</div>
-                    <button class="btn add-cart-btn" onclick="addToCart('${p._id}')">Sepete Ekle (POST /cart)</button>
-                    <button class="btn delete-btn" onclick="deleteProduct('${p._id}')">Ürünü Sil (DELETE /products)</button>
-                </div>`;
-        });
-    } catch (e) { container.innerHTML = "Veri çekilemedi."; }
+// Ekran Değiştirme Motoru
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(el => el.classList.remove('active-screen'));
+    document.getElementById(screenId).classList.add('active-screen');
 }
 
-// 2. Ürün Filtreleme (GET /products?filter=...)
-function filterProducts() {
-    const filter = document.getElementById('filter-input').value;
-    alert(`Metot: GET /products?filter=${filter}\nİşlem: Filtreleme isteği gönderildi (RE-02).`);
+// Rol Seçimi Sonrası Formu Aç
+function showAuth(role) {
+    currentRole = role;
+    document.getElementById('auth-title').innerText = role === 'admin' ? "Yönetici Paneli" : "Kullanıcı Paneli";
+    showScreen('screen-auth');
 }
 
-// 3. Sepete Ürün Ekleme (POST /cart)
-function addToCart(id) {
-    alert(`Metot: POST /cart\nİşlem: ${id} ID'li ürün sepete gönderildi (RE-03).`);
+// 1. ŞİFRELİ KAYIT OLMA
+function register() {
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+
+    if (!user || !pass) return alert("Kullanıcı adı ve şifre boş bırakılamaz!");
+
+    let db = JSON.parse(localStorage.getItem("shopin_db")) || [];
+    
+    // Mükerrer Hesap Kontrolü
+    const exists = db.find(u => u.username === user.toLowerCase());
+    if (exists) {
+        alert(`HATA: '${user}' isimli hesap zaten mevcut! Lütfen giriş yapın.`);
+        return;
+    }
+
+    // Yeni Kullanıcıyı Veritabanına Ekle
+    db.push({ username: user.toLowerCase(), password: pass, role: currentRole });
+    localStorage.setItem("shopin_db", JSON.stringify(db));
+    alert("Kayıt başarılı! Şimdi giriş yapabilirsiniz.");
 }
 
-// 4. Sipariş Oluşturma (POST /orders)
-function createOrder() {
-    alert("Metot: POST /orders\nİşlem: Sepetteki ürünler siparişe dönüştürülüyor (RE-04).");
-}
+// 2. ŞİFRELİ GİRİŞ YAPMA
+function login() {
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
 
-// 5. Sipariş Listeleme (GET /orders)
-function listOrders() {
-    document.getElementById('order-container').style.display = 'block';
-    const list = document.getElementById('order-list');
-    list.innerHTML = "<b>Örnek Sipariş #102:</b> Hazırlanıyor (RE-05)";
-}
+    let db = JSON.parse(localStorage.getItem("shopin_db")) || [];
+    
+    // Kullanıcı Adı ve Şifre Eşleşmesi Kontrolü
+    const foundUser = db.find(u => u.username === user.toLowerCase() && u.password === pass && u.role === currentRole);
 
-// 6. Ürün Ekleme (POST /products)
-function addProduct() {
-    alert("Metot: POST /products\nİşlem: Yeni ürün formu veritabanına gönderiliyor (RE-06).");
-}
-
-// 7. Ürün Silme (DELETE /products/{productId})
-function deleteProduct(id) {
-    if(confirm(`${id} ID'li ürünü silmek istediğinize emin misiniz? (RE-07)`)) {
-        alert(`Metot: DELETE /products/${id}\nİşlem: Ürün sistemden kaldırıldı.`);
+    if (foundUser) {
+        localStorage.setItem("active_user", foundUser.username);
+        alert(`Hoş geldin ${foundUser.username}!`);
+        showScreen('screen-store'); // Ana mağazaya yönlendir
+    } else {
+        alert("Hatalı kullanıcı adı, şifre veya rol seçimi!");
     }
 }
 
-// 8. Sipariş Durumu Güncelleme (PUT /orders/{orderId})
-function updateOrderStatus() {
-    alert("Metot: PUT /orders/{orderId}\nİşlem: Sipariş durumu 'Kargoya Verildi' olarak güncellendi (RE-08).");
+// 3. ÇIKIŞ YAPMA
+function logout() {
+    localStorage.removeItem("active_user");
+    alert("Hesaptan çıkış yapıldı.");
+    document.getElementById('username').value = "";
+    document.getElementById('password').value = "";
+    showScreen('screen-role'); // En başa dön
 }
