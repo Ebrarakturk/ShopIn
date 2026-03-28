@@ -3,69 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopIn | API Integration Panel</title>
+    <title>ShopIn | Canlı Mağaza & API Paneli</title>
     <style>
-        :root { --shopin-blue: #232f3e; --shopin-orange: #febd69; --shopin-dark: #131921; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f3f3f3; margin: 0; padding: 0; }
-        .navbar { background-color: var(--shopin-dark); color: white; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 26px; font-weight: bold; color: var(--shopin-orange); letter-spacing: 1px; }
+        :root { --main-color: #2b2b2b; --accent-color: #ff4757; --bg-color: #f8f9fa; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; padding: 0; color: var(--main-color); }
         
-        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; padding: 25px 5%; }
-        .panel { background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 25px; border-top: 5px solid var(--shopin-blue); }
-        .panel-title { font-size: 20px; font-weight: bold; color: var(--shopin-blue); margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        
-        /* Kurumsal Butonlar */
-        .btn { display: block; width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #adb1b8; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s ease; text-align: left; background: #e7e9ec; }
-        .btn-primary { background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border-color: #a88734; }
-        .btn:hover { border-color: #000; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transform: translateY(-1px); }
-        
-        #console-output { background: #1a1a1a; color: #00ff41; padding: 20px; margin: 0 5% 30px; border-radius: 8px; height: 150px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; }
-        .method-tag { font-size: 10px; padding: 2px 6px; border-radius: 3px; margin-right: 8px; vertical-align: middle; color: white; }
+        /* Navbar - Shopier Style */
+        .navbar { background: white; padding: 15px 8%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 28px; font-weight: 800; color: var(--main-color); letter-spacing: -1px; text-transform: lowercase; }
+        .nav-links { display: flex; gap: 10px; align-items: center; }
+        .nav-links button { background: none; border: 1px solid #ddd; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: 500; font-size: 13px; transition: all 0.2s; }
+        .nav-links button:hover { border-color: var(--main-color); background: #f0f0f0; }
+
+        /* Hero & Filters */
+        .hero { padding: 40px 8% 20px; display: flex; justify-content: space-between; align-items: center; }
+        .hero h2 { font-weight: 700; font-size: 24px; margin: 0; }
+        .filter-select { padding: 10px 15px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-size: 13px; cursor: pointer; }
+
+        /* Product Grid */
+        .products-container { padding: 0 8% 50px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { background: white; border-radius: 15px; overflow: hidden; transition: all 0.3s ease; position: relative; border: 1px solid #eee; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+        .product-img { width: 100%; height: 220px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #aaa; font-weight: 600; font-size: 14px; }
+        .product-info { padding: 25px; flex-grow: 1; }
+        .product-title { font-weight: 600; font-size: 17px; margin-bottom: 8px; }
+        .product-price { color: var(--accent-color); font-weight: 800; font-size: 20px; }
+        .stock-tag { font-size: 12px; background: #e1f5fe; color: #039be5; padding: 4px 10px; border-radius: 12px; margin-top: 12px; display: inline-block; font-weight: 500; }
+
+        /* Action Buttons */
+        .add-btn { width: 100%; background: var(--main-color); color: white; border: none; padding: 14px; border-radius: 10px; margin-top: 20px; cursor: pointer; font-weight: 700; font-size: 14px; transition: background 0.2s; }
+        .add-btn:hover { background: #000; }
+
+        /* Admin/Debug Panel (Şık ve Gizlenebilir) */
+        .debug-panel { position: fixed ; bottom: 20px; right: 20px; width: 320px; background: #1a1a1a; color: #00ff41; padding: 18px; border-radius: 12px; font-family: 'Courier New', monospace; font-size: 11px; max-height: 220px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 2000; border: 1px solid #333; }
+        .method-tag { font-size: 9px; padding: 2px 5px; border-radius: 3px; color: white; margin-right: 5px; font-weight: bold; }
         .get { background: #61affe; } .post { background: #49cc90; } .put { background: #fca130; } .delete { background: #f93e3e; }
     </style>
 </head>
 <body>
 
-    <div class="navbar">
+    <nav class="navbar">
         <div class="logo">ShopIn</div>
-        <div style="font-size: 13px; opacity: 0.8;">Technical Requirements Overview v1.0</div>
-    </div>
+        <div class="nav-links">
+            <button onclick="ismailLogin()">Giriş Yap</button> <button onclick="ismailRegister()" style="background: var(--main-color); color: white;">Kayıt Ol</button> <button onclick="ebrarListOrders()" style="border-color: #eee; font-size: 14px;">🛒 Siparişlerim</button> </div>
+    </nav>
 
-    <div class="main-grid">
+    <div class="hero">
+        <h2>Kataloğu Keşfet</h2>
         
-        <div class="panel">
-            <div class="panel-title">Müşteri ve Satış Fonksiyonları</div>
-            <button class="btn btn-primary" onclick="ebrarGetStock()"><span class="method-tag get">GET</span> Ürün Stok Görüntüleme</button>
-            <button class="btn btn-primary" onclick="ebrarFilter()"><span class="method-tag get">GET</span> Gelişmiş Ürün Filtreleme</button>
-            <button class="btn btn-primary" onclick="ebrarAddToCart()"><span class="method-tag post">POST</span> Sepete Ürün Kaydı</button>
-            <button class="btn btn-primary" onclick="ebrarCreateOrder()"><span class="method-tag post">POST</span> Yeni Sipariş Oluşturma</button>
-            <button class="btn btn-primary" onclick="ebrarListOrders()"><span class="method-tag get">GET</span> Kullanıcı Sipariş Geçmişi</button>
-            <button class="btn btn-primary" onclick="ebrarAddProduct()"><span class="method-tag post">POST</span> Katalog Ürün Ekleme</button>
-            <button class="btn btn-primary" onclick="ebrarDeleteProduct()"><span class="method-tag delete">DEL</span> Katalog Ürün Silme</button>
-            <button class="btn btn-primary" onclick="ebrarUpdateOrder()"><span class="method-tag put">PUT</span> Sipariş Durum Güncelleme</button>
+        <select class="filter-select" onchange="ebrarFilter()"> <option>Tüm Kategoriler</option>
+            <option>Elektronik</option>
+            <option>Giyim</option>
+            <option>Kitap</option>
+        </select>
+    </div>
+
+    <div class="products-container" id="product-list">
+        
+        <div class="product-card">
+            <div class="product-img">Elektronik</div>
+            <div class="product-info">
+                <div class="product-title">Akıllı Saat v2</div>
+                <div class="product-price">2.499 TL</div>
+                <div class="stock-tag">Stok Durumu: 12 Adet (RE-01)</div>
+                
+                <button class="add-btn" onclick="ebrarAddCart()">Sepete Ekle</button> <div style="margin-top:12px; display:flex; gap:8px;">
+                    <button onclick="ismailProductDetail('1')" style="flex:1; font-size:11px; padding: 6px;">Detay Gör</button>
+                    <button onclick="ebrarDeleteProduct('1')" style="color:var(--accent-color); border-color: #ffcccc; font-size:11px; padding: 6px;">Sil</button>
+                </div>
+            </div>
         </div>
 
-        <div class="panel">
-            <div class="panel-title">Kullanıcı ve Sistem Yönetimi</div>
-            <button class="btn" onclick="ismailListProducts()"><span class="method-tag get">GET</span> Katalog Genel Listeleme</button>
-            <button class="btn" onclick="ismailProductDetail()"><span class="method-tag get">GET</span> Ürün Detay Sorgulama</button>
-            <button class="btn" onclick="ismailRegister()"><span class="method-tag post">POST</span> Sistem Kullanıcı Kaydı</button>
-            <button class="btn" onclick="ismailLogin()"><span class="method-tag post">POST</span> Kullanıcı Kimlik Doğrulama</button>
-            <button class="btn" onclick="ismailGetCart()"><span class="method-tag get">GET</span> Aktif Sepet Listeleme</button>
-            <button class="btn" onclick="ismailDeleteCart()"><span class="method-tag delete">DEL</span> Sepet İçeriği Kaldırma</button>
-            <button class="btn" onclick="ismailUpdateProduct()"><span class="method-tag put">PUT</span> Ürün Verisi Güncelleme</button>
-            <button class="btn" onclick="ismailListAllOrders()"><span class="method-tag get">GET</span> Sistem Sipariş Listesi</button>
+        <div class="product-card">
+            <div class="product-img">Giyim</div>
+            <div class="product-info">
+                <div class="product-title">Klasik Deri Ceket</div>
+                <div class="product-price">1.850 TL</div>
+                <div class="stock-tag">Stok Durumu: 4 Adet</div>
+                <button class="add-btn" onclick="ebrarAddCart()">Sepete Ekle</button>
+                <div style="margin-top:12px; display:flex; gap:8px;">
+                    <button onclick="ismailProductDetail('2')" style="flex:1; font-size:11px; padding: 6px;">Detay Gör</button>
+                    <button onclick="ebrarDeleteProduct('2')" style="color:var(--accent-color); border-color: #ffcccc; font-size:11px; padding: 6px;">Sil</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img">Elektronik</div>
+            <div class="product-info">
+                <div class="product-title">Kablosuz Kulaklık (ANC)</div>
+                <div class="product-price">3.200 TL</div>
+                <div class="stock-tag">Stok Durumu: 25 Adet</div>
+                <button class="add-btn" onclick="ebrarAddCart()">Sepete Ekle</button>
+                <div style="margin-top:12px; display:flex; gap:8px;">
+                    <button onclick="ismailProductDetail('3')" style="flex:1; font-size:11px; padding: 6px;">Detay Gör</button>
+                    <button onclick="ebrarDeleteProduct('3')" style="color:var(--accent-color); border-color: #ffcccc; font-size:11px; padding: 6px;">Sil</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" style="background:#f4f4f4; border: 2px dashed #ccc; justify-content: center; align-items: center; padding: 20px;">
+            <div style="text-align:center; color:#666;">
+                <b>Yönetici Araçları (RE-06, RE-08)</b>
+                <button onclick="ebrarAddProduct()" style="margin-top:15px; font-size:12px; width:100%;">+ Yeni Ürün Ekle (POST)</button>
+                <button onclick="ebrarUpdateOrder()" style="margin-top:8px; font-size:12px; width:100%;">🔄 Sipariş Durumu Güncelle (PUT)</button>
+            </div>
         </div>
 
     </div>
 
-    <div id="console-output">
-        <b>> ShopIn API Terminal</b>
-        <div id="log-content"><br>Bağlantı başarılı. Sistem komut bekliyor...</div>
+    <div class="debug-panel" id="debug-log">
+        <b>> ShopIn API Logs</b>
+        <div id="log-content"><br>Sistem aktif...</div>
     </div>
 
     <script src="script.js"></script>
     <script src="ismail.js"></script>
-
 </body>
 </html>
