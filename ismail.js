@@ -34,30 +34,26 @@ function ismailRegister() {
     }
 }
 
-// 4. Kullanıcı Giriş (RE-04) - Veritabanı Kontrollü
+// 4. Kullanıcı Giriş (RE-04) - Arayüz Kontrollü
 function ismailLogin() {
     const name = prompt("Giriş yapmak için ShopIn kullanıcı adınızı giriniz:");
     
     if (name) {
-        // Kayıtlı kullanıcıları hafızadan çek
         let savedUsers = JSON.parse(localStorage.getItem("shopin_users")) || [];
         
-        // Girilen isim kayıtlı mı diye kontrol et
         if (savedUsers.includes(name.toLowerCase())) {
-            // ✅ Giriş Başarılı
+            // Oturum bilgilerini kaydet
             localStorage.setItem("isLoggedIn", "true");
-            localStorage.setItem("currentUser", name.toLowerCase()); // Kimin girdiği belli olsun
+            localStorage.setItem("currentUser", name.toLowerCase());
             
-            // Arayüzdeki "Ziyaretçi" yazısını güncelle
-            const authTag = document.getElementById('auth-tag');
-            if (authTag) authTag.innerText = `👤 Durum: ${name} (Giriş Yapıldı)`;
+            // Arayüzü Kullanıcıya Göre Değiştir
+            updateUIForLogin(name);
             
-            logIsmail(`POST /users/login: ShopIn kullanıcısı '${name}' başarıyla giriş yaptı. (200 OK) (RE-04)`);
-            alert(`Giriş başarılı! ShopIn'e hoş geldin, ${name}. Artık sepete ürün ekleyebilirsiniz.`);
+            logIsmail(`POST /users/login: '${name}' başarıyla giriş yaptı. (RE-04)`);
+            alert(`ShopIn'e hoş geldin, ${name}!`);
         } else {
-            // 🚨 Hata: Kullanıcı Yok
-            logIsmail(`HATA: '${name}' adında bir ShopIn kullanıcısı bulunamadı! (404 Not Found) (RE-04)`);
-            alert(`Hata: '${name}' isminde bir kayıt bulunamadı. Lütfen önce 'Kayıt Ol' butonunu kullanarak ShopIn'e üye olun.`);
+            logIsmail(`HATA: '${name}' bulunamadı! (RE-04)`);
+            alert(`Hata: '${name}' isminde bir kayıt bulunamadı. Önce kayıt olmalısınız.`);
         }
     }
 }

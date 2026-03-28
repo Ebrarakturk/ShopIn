@@ -45,8 +45,17 @@
     <nav class="navbar">
         <div class="logo">ShopIn</div>
         <div class="nav-links">
-            <button onclick="ismailLogin()">Giriş Yap</button> <button onclick="ismailRegister()" style="background: var(--main-color); color: white;">Kayıt Ol</button> <button onclick="ebrarListOrders()" style="border-color: #eee; font-size: 14px;">🛒 Siparişlerim</button> </div>
-    </nav>
+        <div class="nav-links">
+            <div id="guest-menu">
+                <button onclick="ismailLogin()">Giriş Yap</button>
+                <button onclick="ismailRegister()" style="background: var(--main); color: white;">Kayıt Ol</button>
+            </div>
+            
+            <div id="user-menu" style="display: none; align-items: center;">
+                <span id="auth-tag" style="font-size: 15px; font-weight: bold; margin-right: 15px; color: var(--main);"></span>
+                <button onclick="ismailLogout()" style="border: 1px solid #ff4757; color: #ff4757;">Çıkış Yap</button>
+            </div>
+        </div>    
 
     <div class="hero">
         <h2>Kataloğu Keşfet</h2>
