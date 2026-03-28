@@ -144,7 +144,6 @@ function addToCart(id) {
 
     cart.push(p);
     updateCartBtn();
-    // Alert yerine ufak bir bildirim de konabilir ama şimdilik uyarı kalsın
 }
 
 function showCart() {
