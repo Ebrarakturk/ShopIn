@@ -34,12 +34,32 @@ function ismailRegister() {
     }
 }
 
-// 4. Kullanıcı Giriş (RE-04)
+// 4. Kullanıcı Giriş (RE-04) - Veritabanı Kontrollü
 function ismailLogin() {
-    localStorage.setItem("isLoggedIn", "true");
-    document.getElementById('auth-tag').innerText = "👤 Durum: Giriş Yapıldı";
-    logIsmail("POST /users/login: Kimlik doğrulandı, giriş başarılı. (RE-04)");
-    alert("Giriş yapıldı! Artık Ebrar'ın sepet sistemini kullanabilirsiniz.");
+    const name = prompt("Giriş yapmak için ShopIn kullanıcı adınızı giriniz:");
+    
+    if (name) {
+        // Kayıtlı kullanıcıları hafızadan çek
+        let savedUsers = JSON.parse(localStorage.getItem("shopin_users")) || [];
+        
+        // Girilen isim kayıtlı mı diye kontrol et
+        if (savedUsers.includes(name.toLowerCase())) {
+            // ✅ Giriş Başarılı
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("currentUser", name.toLowerCase()); // Kimin girdiği belli olsun
+            
+            // Arayüzdeki "Ziyaretçi" yazısını güncelle
+            const authTag = document.getElementById('auth-tag');
+            if (authTag) authTag.innerText = `👤 Durum: ${name} (Giriş Yapıldı)`;
+            
+            logIsmail(`POST /users/login: ShopIn kullanıcısı '${name}' başarıyla giriş yaptı. (200 OK) (RE-04)`);
+            alert(`Giriş başarılı! ShopIn'e hoş geldin, ${name}. Artık sepete ürün ekleyebilirsiniz.`);
+        } else {
+            // 🚨 Hata: Kullanıcı Yok
+            logIsmail(`HATA: '${name}' adında bir ShopIn kullanıcısı bulunamadı! (404 Not Found) (RE-04)`);
+            alert(`Hata: '${name}' isminde bir kayıt bulunamadı. Lütfen önce 'Kayıt Ol' butonunu kullanarak ShopIn'e üye olun.`);
+        }
+    }
 }
 
 // 5. Aktif Sepet Listeleme (RE-05)
