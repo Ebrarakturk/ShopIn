@@ -47,8 +47,13 @@ function showAuth(role) {
     showScreen('screen-auth');
 }
 
-// --- GİRİŞ VE KAYIT ---
+// --- GİRİŞ VE KAYIT (GÜVENLİK GÜNCELLEMESİ) ---
 function register() {
+    // 🚨 KORUMA: Yönetici olarak kayıt olmayı tamamen yasakla
+    if (currentRole === 'admin') {
+        return alert("⛔ Sistem Uyarısı: Dışarıdan yeni yönetici hesabı oluşturulamaz! Sadece yetkili patron giriş yapabilir.");
+    }
+
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
     if (!user || !pass) return alert("Kullanıcı adı ve şifre boş bırakılamaz!");
@@ -65,8 +70,24 @@ function register() {
 function login() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
+
+    // 👑 YÖNETİCİ (PATRON) GİRİŞİ (SABİT ŞİFRE)
+    if (currentRole === 'admin') {
+        // Sadece bu özel şifre ve kullanıcı adıyla girilebilir!
+        if (user === "admin" && pass === "shopin123") {
+            localStorage.setItem("active_user", "Sistem Yöneticisi");
+            document.getElementById('account-title').innerText = `👑 SİSTEM YÖNETİCİSİ`;
+            alert("Hoş geldin Patron! Tüm yetkilerle giriş yapıldı.");
+            showScreen('screen-store'); 
+            renderProducts();
+            return; // İşlemi bitir, mağazaya geç
+        } else {
+            return alert("⛔ Hatalı yönetici kullanıcı adı veya şifresi! Yetkisiz giriş denemesi.");
+        }
+    }
+
+    // 👤 NORMAL KULLANICI GİRİŞİ
     let db = JSON.parse(localStorage.getItem("shopin_db")) || [];
-    
     const foundUser = db.find(u => u.username === user.toLowerCase() && u.password === pass && u.role === currentRole);
 
     if (foundUser) {
