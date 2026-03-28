@@ -8,18 +8,18 @@
         .screen { display: none; padding: 50px 20px; }
         .active-screen { display: block; }
         .btn { padding: 10px 20px; margin: 10px; cursor: pointer; border: none; border-radius: 5px; background: #2b2b2b; color: white; font-size: 16px; transition: 0.3s; }
-        .btn:hover { background: #ff4757; }
+        .btn:hover { opacity: 0.8; }
         input, select { padding: 10px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; font-size: 15px;}
         
-        /* Navbar Stili */
         .navbar { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .nav-right { display: flex; align-items: center; gap: 10px; }
         .nav-right button, .nav-right select, .nav-right input { margin: 0; }
         
-        /* Ürün Kartı Stili */
         .product-card { background:white; padding:20px; border-radius:10px; width:220px; box-shadow:0 4px 8px rgba(0,0,0,0.1); text-align:center; transition: transform 0.2s; }
         .product-card:hover { transform: translateY(-5px); }
-        .product-icon { font-size:60px; background:#f8f9fa; padding:20px; border-radius:10px; margin-bottom:15px; }
+        .product-icon { font-size:60px; background:#f8f9fa; padding:20px; border-radius:10px; margin-bottom:15px; cursor: pointer; }
+        
+        .cart-item { display:flex; justify-content:space-between; align-items:center; background:white; padding:15px; margin-bottom:10px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -36,8 +36,7 @@
         <input type="text" id="username" placeholder="Kullanıcı Adı"><br>
         <input type="password" id="password" placeholder="Şifre"><br>
         <button class="btn" onclick="login()">Giriş Yap</button>
-        <button class="btn" onclick="register()">Kayıt Ol</button>
-        <br><br>
+        <button class="btn" onclick="register()">Kayıt Ol</button><br><br>
         <button class="btn" style="background:gray;" onclick="showScreen('screen-role')">Geri Dön</button>
     </div>
 
@@ -52,12 +51,33 @@
                     <option value="Giyim">Giyim</option>
                     <option value="Kitap">Kitap</option>
                 </select>
-                <button id="cart-btn" class="btn" style="background: #49cc90;">🛒 Sepet (0)</button>
+                <button id="cart-btn" class="btn" style="background: #49cc90;" onclick="showCart()">🛒 Sepet (0)</button>
                 <button class="btn" onclick="showScreen('screen-account')" style="background:#ff4757;">👤 Hesabım</button>
             </div>
         </div>
         <br>
         <div id="products-grid" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;"></div>
+    </div>
+
+    <div id="screen-product-detail" class="screen">
+        <div class="navbar">
+            <h2 style="margin:0; color: #2b2b2b;">🔍 Ürün Detayı</h2>
+            <button class="btn" style="background:gray;" onclick="showScreen('screen-store')">Mağazaya Dön</button>
+        </div>
+        <br>
+        <div id="product-detail-content" style="max-width: 500px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            </div>
+    </div>
+
+    <div id="screen-cart" class="screen">
+        <div class="navbar">
+            <h2 style="margin:0; color: #2b2b2b;">🛒 Sepetim</h2>
+            <button class="btn" style="background:gray;" onclick="showScreen('screen-store')">Alışverişe Devam Et</button>
+        </div>
+        <br>
+        <div id="cart-items" style="max-width: 600px; margin: auto; text-align: left;"></div>
+        <h2 id="cart-total" style="text-align: center; margin-top: 20px;">Toplam: 0 TL</h2>
+        <button class="btn" style="background: #49cc90; width: 250px; font-size: 18px;" onclick="checkout()">Siparişi Onayla</button>
     </div>
 
     <div id="screen-account" class="screen">
