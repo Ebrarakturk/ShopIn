@@ -1,4 +1,6 @@
+# Ebrar Aktürk'ün Web Frontend Görevleri
 
+**Front-end Test Videosu:** [video]()
 
 ## 1. Stok Görüntüleme Sayfası/Bileşeni
 
