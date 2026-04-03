@@ -7,4 +7,4 @@
 
 1-[Ebrar Aktürk'ün REST API metotları](Ebrar-Aktürk/Ebrar-Aktürk-REST-API-Gorevlerı.md)
 
-2-[İsmail Taşinen'in REST API metotları]()
+2-[İsmail Taşinen'in REST API metotları](İsmail-Taşinen/İsmail-Taşinen-Rest-API-gorevleri.md)
