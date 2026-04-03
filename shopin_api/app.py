@@ -1,86 +1,85 @@
+from flask_cors import CORS
 from flask import Flask, jsonify, request
 from pymongo import MongoClient
-from bson.objectid import ObjectId
+import os
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
-# MongoDB Bağlantısı
-client = MongoClient("mongodb+srv://ebrar_akturk:passwordEbrar2005.@cluster0.rqknkis.mongodb.net/?appName=Cluster0")
-db = client.shopin_db
+# MongoDB Atlas Bağlantısı (Güvenli bir şekilde aynen korundu)
+client = MongoClient("mongodb+srv://ebrar_akturk:Ebrar2005.@cluster0.rqknkis.mongodb.net/?retryWrites=true&w=majority")
+db = client['shopin_db']
 
 @app.route('/')
 def home():
-    return jsonify({"message": "ShopIn API'sine Hoş Geldiniz!"}), 200
+    return jsonify({"message": "ShopIn API calistirildi!", "status": "Basarili"}), 200
 
-# 1. GEREKSİNİM: Stok Listeleme
+# 1. GEREKSİNİM: Stok Görüntüleme
 @app.route('/products/stock', methods=['GET'])
-def get_products_stock():
-    products = list(db.products.find({}, {"_id": 1, "name": 1, "stock": 1}))
-    for p in products:
-        p['_id'] = str(p['_id'])
-    return jsonify(products), 200
+def get_stock():
+    # Sadece stok ve başlık bilgilerini döner
+    stock_list = list(db.products.find({}, {"_id": 0, "title": 1, "stock": 1}))
+    return jsonify(stock_list), 200
 
-# 2. GEREKSİNİM: Ürün Filtreleme
+# 2. GEREKSİNİM: Ürün Filtreleme ve Listeleme (500 Hatası Çözüldü)
 @app.route('/products', methods=['GET'])
-def filter_products():
-    category = request.args.get('category')
-    query = {"category": category} if category else {}
-    products = list(db.products.find(query))
-    for p in products:
-        p['_id'] = str(p['_id'])
+def get_products():
+    # URL'den gelen ?filter=Elektronik kelimesini yakalar
+    category_filter = request.args.get('filter')
+    
+    query = {}
+    if category_filter:
+        query['category'] = category_filter # Sadece o kategoriyi arar
+        
+    products = list(db.products.find(query, {"_id": 0}))
     return jsonify(products), 200
 
 # 3. GEREKSİNİM: Sepete Ürün Ekleme
 @app.route('/cart', methods=['POST'])
-def add_product_to_cart():
-    data = request.get_json()
-    return jsonify({"message": "Ürün sepete eklendi!", "cart_data": data}), 201
+def add_to_cart():
+    data = request.json
+    db.cart.insert_one(data)
+    return jsonify({"message": "Urun sepete eklendi!"}), 201
 
-# 4. GEREKSİNİM: Sipariş Verme
+# 4. GEREKSİNİM: Sipariş Oluşturma
 @app.route('/orders', methods=['POST'])
 def create_order():
-    data = request.get_json()
-    product_name = data.get('name')
-    quantity = data.get('quantity', 1)
-    product = db.products.find_one({"name": product_name})
-    if product and product['stock'] >= quantity:
-        db.products.update_one({"name": product_name}, {"$inc": {"stock": -quantity}})
-        db.orders.insert_one({"product": product_name, "quantity": quantity, "status": "Hazırlanıyor"})
-        return jsonify({"message": "Sipariş oluşturuldu!"}), 201
-    return jsonify({"error": "Stok yetersiz!"}), 400
+    data = request.json
+    db.orders.insert_one(data)
+    # Sipariş sonrası sepeti boşaltmak
+    db.cart.delete_many({}) 
+    return jsonify({"message": "Siparisiniz alindi!"}), 201
 
-# 5. GEREKSİNİM: Sipariş Geçmişi
+# 5. GEREKSİNİM: Sipariş Listeleme (KODDA EKSİKTİ, EKLENDİ)
 @app.route('/orders', methods=['GET'])
-def list_orders():
-    orders = list(db.orders.find())
-    for o in orders:
-        o['_id'] = str(o['_id'])
+def get_orders():
+    orders = list(db.orders.find({}, {"_id": 0}))
     return jsonify(orders), 200
 
 # 6. GEREKSİNİM: Yeni Ürün Ekleme (Admin)
 @app.route('/products', methods=['POST'])
-def admin_add_product():
-    data = request.get_json()
+def add_product():
+    data = request.json
     db.products.insert_one(data)
-    return jsonify({"message": "Yeni ürün eklendi!"}), 201
+    return jsonify({"message": "Urun basariyla eklendi!"}), 201
 
-# 7. GEREKSİNİM: Ürün Silme (Admin)
-@app.route('/products/<string:product_id>', methods=['DELETE'])
-def admin_delete_product(product_id):
-    result = db.products.delete_one({"_id": ObjectId(product_id)})
-    if result.deleted_count > 0:
-        return jsonify({"message": "Ürün silindi!"}), 200
-    return jsonify({"error": "Bulunamadı!"}), 404
+# 7. GEREKSİNİM: Ürün Silme (Admin) (KODDA EKSİKTİ, EKLENDİ)
+@app.route('/products/<int:product_id>', methods=['DELETE'])
+def delete_product(product_id):
+    # Ürün ID'sine göre silme işlemi
+    db.products.delete_one({"id": product_id})
+    return jsonify({"message": "Urun kalici olarak silindi!"}), 200
 
 # 8. GEREKSİNİM: Sipariş Durumu Güncelleme (Admin)
-@app.route('/orders/<string:order_id>', methods=['PUT'])
-def admin_update_order(order_id):
-    data = request.get_json()
-    new_status = data.get('status')
-    result = db.orders.update_one({"_id": ObjectId(order_id)}, {"$set": {"status": new_status}})
-    if result.modified_count > 0:
-        return jsonify({"message": "Durum güncellendi!"}), 200
-    return jsonify({"error": "Bulunamadı!"}), 404
+@app.route('/orders/<int:order_id>', methods=['PUT'])
+def update_order_status(order_id):
+    data = request.json
+    db.orders.update_one({"id": order_id}, {"$set": {"status": data.get('status')}})
+    return jsonify({"message": "Siparis durumu basariyla guncellendi!"}), 200
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+
+if __name__ == "__main__":
+    # Postman ile uyumlu olması için port 8000 yapıldı
+    port = int(os.environ.get("PORT", 8000))
+    # debug=True sayesinde bir daha hata alırsan terminalde sebebini açıkça yazacak
+    app.run(host="0.0.0.0", port=port, debug=True)

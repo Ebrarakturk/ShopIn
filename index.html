@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>ShopIn | Premium Mağaza</title>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #fafafa; margin: 0; text-align: center; color: #111; }
+        .screen { display: none; padding: 50px 20px; min-height: 100vh; box-sizing: border-box;}
+        .active-screen { display: block; }
+        
+        #screen-role { 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                              url('https://static.vecteezy.com/system/resources/previews/071/052/170/large_2x/modern-minimalist-clothing-store-interior-with-racks-of-apparel-and-display-tables-photo.jpg');
+            background-size: cover; background-position: center; background-repeat: no-repeat; color: #fff;
+        }
+        
+        #screen-role.active-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        #screen-role p { color: rgba(255, 255, 255, 0.8); font-size: 18px; margin-bottom: 30px; }
+        .logo-landing { font-size: 32px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; color: #fff; margin-bottom: 20px; }
+        .logo-landing span { background: #fff; color: #000; padding: 2px 10px; border-radius: 4px; margin-left: 4px; }
+
+        .btn { padding: 12px 24px; margin: 10px; cursor: pointer; border: 2px solid #000; border-radius: 4px; background: #000; color: #fff; font-size: 16px; font-weight: 600; transition: all 0.3s ease; outline: none; position: relative; z-index: 10;}
+        .btn:hover { background: #fff; color: #000; }
+        
+        #screen-role .btn-outline { background: transparent; border-color: #fff; color: #fff; }
+        #screen-role .btn-outline:hover { background: #fff; color: #000; border-color: #fff; }
+
+        .btn-outline { background: #fff; color: #000; border: 2px solid #000; }
+        .btn-outline:hover { background: #000; color: #fff; border-color: #000;}
+
+        input, select { padding: 12px; margin: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 15px; outline: none; }
+        input:focus, select:focus { border-color: #000; }
+        
+        .navbar { background: #fff; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 1000; }
+        .logo { font-size: 26px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; color: #000;}
+        .logo span { background: #000; color: #fff; padding: 2px 8px; border-radius: 4px; margin-left: 2px; }
+        
+        .nav-right { display: flex; align-items: center; gap: 5px; }
+        .nav-right button, .nav-right select, .nav-right input { margin: 0; }
+        
+        .product-card { position: relative; background:#fff; padding:20px; border-radius:8px; width:220px; border: 1px solid #eee; text-align:center; transition: transform 0.3s, box-shadow 0.3s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .product-img { width: 100%; height: 180px; object-fit: contain; margin-bottom: 15px; cursor: pointer; background: #fff; }
+        
+        .heart-icon { position: absolute; top: 15px; right: 15px; font-size: 24px; cursor: pointer; transition: transform 0.2s; z-index: 5; user-select: none; }
+        .heart-icon:hover { transform: scale(1.2); }
+
+        .cart-item { display:flex; justify-content:space-between; align-items:center; background:#fff; padding:15px; margin-bottom:10px; border-radius:8px; border: 1px solid #eee; }
+        .cart-item-img { width: 60px; height: 60px; object-fit: contain; border-radius: 5px; margin-right: 15px; background: #fff; }
+
+        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+    <div id="screen-role" class="screen active-screen">
+        <div class="logo-landing">SHOP<span>IN</span></div>
+        <p>Geleceğin alışveriş deneyimine hoş geldiniz.<br>Lütfen giriş türünüzü seçin.</p>
+        <button class="btn" onclick="showAuth('user')">Kullanıcı Girişi</button>
+        <button class="btn btn-outline" onclick="showAuth('admin')">Yönetici Girişi</button>
+    </div>
+
+    <div id="screen-auth" class="screen">
+        <div style="margin: 60px 0 20px 0;" class="logo">SHOP<span>IN</span></div>
+        <h2 id="auth-title" style="font-weight: 600;">Giriş / Kayıt</h2>
+        <input type="text" id="username" placeholder="Kullanıcı Adı"><br>
+        <input type="password" id="password" placeholder="Şifre"><br><br>
+        <button class="btn" onclick="login()">Giriş Yap</button>
+        <button class="btn btn-outline" onclick="register()">Kayıt Ol</button><br><br>
+        <button class="btn btn-outline" style="border: none; text-decoration: underline;" onclick="showScreen('screen-role')">Geri Dön</button>
+    </div>
+
+    <div id="screen-store" class="screen" style="padding: 0;">
+        <div class="navbar">
+            <div class="logo">SHOP<span>IN</span></div>
+            <div class="nav-right">
+                <input type="text" id="searchInput" placeholder="Ürün Ara..." onkeyup="filterProducts()">
+                <select id="categoryFilter" class="btn btn-outline" style="font-weight: 500; border-width: 1px;" onchange="filterProducts()">
+                    <option value="all">Tüm Kategoriler</option>
+                    <option value="Elektronik">Elektronik</option>
+                    <option value="Giyim">Giyim</option>
+                    <option value="Kitap">Kitap</option>
+                    <option value="Ev Aletleri">Ev Aletleri</option>
+                </select>
+                <button class="btn btn-outline" style="border-width: 1px; color: #ff4757; border-color: #eee;" onclick="showFavorites()">🤍 Favorilerim</button>
+                <button id="cart-btn" class="btn" onclick="showCart()">🛒 Sepet (0)</button>
+                <button class="btn btn-outline" style="border-width: 1px;" onclick="showAccountScreen()">👤 Hesabım</button>
+            </div>
+        </div>
+        <br><br><br><br><br> 
+        <div id="products-grid" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px; max-width: 1200px; margin: auto;"></div>
+    </div>
+
+    <div id="screen-product-detail" class="screen">
+        <div class="navbar">
+            <div class="logo">SHOP<span>IN</span></div>
+            <button class="btn btn-outline" style="border-width: 1px;" onclick="showScreen('screen-store')">Mağazaya Dön</button>
+        </div>
+        <br><br><br><br><br>
+        <div id="product-detail-content" style="max-width: 500px; margin: auto; background: #fff; padding: 40px; border-radius: 8px; border: 1px solid #eee; text-align: left;"></div>
+    </div>
+
+    <div id="screen-cart" class="screen">
+        <div class="navbar">
+            <div class="logo">SHOP<span>IN</span></div>
+            <button class="btn btn-outline" style="border-width: 1px;" onclick="showScreen('screen-store')">Alışverişe Devam Et</button>
+        </div>
+        <br><br><br><br><br>
+        <h2 style="font-weight: 600;">Sepetim</h2>
+        <div id="cart-items" style="max-width: 600px; margin: auto; text-align: left;"></div>
+        <h2 id="cart-total" style="text-align: center; margin-top: 20px; font-weight: 800;">Toplam: 0 TL</h2>
+        <button class="btn" style="width: 250px; font-size: 18px; padding: 15px;" onclick="checkout()">Siparişi Onayla</button>
+    </div>
+
+    <div id="screen-account" class="screen">
+        <div class="navbar">
+            <div class="logo">SHOP<span>IN</span></div>
+            <div>
+                <button class="btn btn-outline" style="border-width: 1px;" onclick="showScreen('screen-store')">Mağazaya Dön</button>
+                <button class="btn" onclick="logout()">Çıkış Yap</button>
+            </div>
+        </div>
+        <br><br><br><br><br>
+        <div style="max-width: 600px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; border: 1px solid #eee;">
+            <h2 id="account-title" style="margin-top:0; border-bottom: 1px solid #eee; padding-bottom: 15px;">Hesap Detayları</h2>
+            <h3 style="text-align: left; margin-top: 25px;">📦 Geçmiş Siparişlerim</h3>
+            <div id="order-history-list" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <div id="screen-favorites" class="screen" style="padding: 0;">
+        <div class="navbar">
+            <div class="logo">SHOP<span>IN</span></div>
+            <button class="btn btn-outline" style="border-width: 1px;" onclick="showScreen('screen-store')">Mağazaya Dön</button>
+        </div>
+        <br><br><br><br><br>
+        <h2 style="font-weight: 600;">🤍 Favori Ürünlerim</h2>
+        <div id="favorites-grid" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px; max-width: 1200px; margin: auto;"></div>
+    </div>
+
+    <div id="screen-admin" class="screen">
+        <div class="navbar">
+            <div class="logo">SHOP<span>IN</span> <span style="background: #ff4757;">ADMİN</span></div>
+            <div>
+                <button class="btn btn-outline" style="border-width: 1px;" onclick="showScreen('screen-store')">Mağazaya Göz At</button>
+                <button class="btn" onclick="logout()">Çıkış Yap</button>
+            </div>
+        </div>
+        <br><br><br><br><br>
+        <div style="max-width: 1000px; margin: auto; text-align: left;">
+            <h2 style="font-weight: 800; margin-bottom: 30px;">👑 Yönetici Kontrol Paneli</h2>
+            
+            <div style="background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 30px;">
+                <h3 style="margin-top: 0; border-bottom: 2px solid #000; padding-bottom: 10px;">📦 Müşteri Siparişlerini Yönet</h3>
+                <div id="admin-orders-list"></div>
+            </div>
+
+            <div style="background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #eee;">
+                <h3 style="margin-top: 0; border-bottom: 2px solid #000; padding-bottom: 10px;">🛒 Ürün ve Stok Yönetimi</h3>
+                
+                <div style="background: #fafafa; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px dashed #ccc;">
+                    <h4 style="margin-top: 0;">➕ Sisteme Yeni Ürün Ekle</h4>
+                    <input type="text" id="add-title" placeholder="Ürün Adı" style="width: 25%;">
+                    <input type="number" id="add-price" placeholder="Fiyat (TL)" style="width: 15%;">
+                    <select id="add-category" style="width: 20%;">
+                        <option value="Elektronik">Elektronik</option>
+                        <option value="Giyim">Giyim</option>
+                        <option value="Kitap">Kitap</option>
+                        <option value="Ev Aletleri">Ev Aletleri</option>
+                    </select>
+                    <input type="number" id="add-stock" placeholder="Stok" style="width: 10%;">
+                    <input type="text" id="add-img" placeholder="Fotoğraf URL (Link)" style="width: 90%; margin-top: 10px;">
+                    <br>
+                    <button class="btn" style="background: #49cc90; border-color: #49cc90; margin-top: 15px;" onclick="addNewProduct()">Ürünü Vitrine Ekle</button>
+                </div>
+
+                <h4>Mevcut Ürünler (Stok Güncelle & Sil)</h4>
+                <div id="admin-products-list" style="max-height: 500px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
