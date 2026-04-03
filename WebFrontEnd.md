@@ -4,6 +4,6 @@
 
 ## Grup Üyelerinin Web Frontend Görevleri
 
-1. [Ebrar Aktürk'ün Web Frontend Görevleri]()
+1. [Ebrar Aktürk'ün Web Frontend Görevleri](Ebrar-Aktürk/Ebrar-Aktürk-Web-Frontend-Görevleri.md)
 
 2. [İsmail Taşinen'in Web Frontend Görevleri]()
