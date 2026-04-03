@@ -6,4 +6,4 @@
 
 1. [Ebrar Aktürk'ün Web Frontend Görevleri](Ebrar-Aktürk/Ebrar-Aktürk-Web-Frontend-Görevleri.md)
 
-2. [İsmail Taşinen'in Web Frontend Görevleri]()
+2. [İsmail Taşinen'in Web Frontend Görevleri](İsmail-Taşinen/İsmail-Taşinen-Web-Frontend-Gorevleri.md)
