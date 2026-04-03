@@ -1,3 +1,6 @@
+İsmail Taşinen'in Web Frontend Görevleri
+
+**Front-end Test Videosu:** [video]()
 ### 1. Ürün Listeleme Sayfası/Bileşeni
 
 * **API Endpoint:** `GET /products`
