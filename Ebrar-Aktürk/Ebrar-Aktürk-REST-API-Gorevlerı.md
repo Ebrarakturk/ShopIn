@@ -1,6 +1,6 @@
 # Ebrar Aktürk'ün REST API Metotları
 
-**API Test Videosu:** 
+**API Test Videosu:** [video](https://youtube.com/shorts/mAGftDtfwDA)
 
 
 ## 1. Stok Listeleme

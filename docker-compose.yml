@@ -1,26 +1,12 @@
 version: '3.7'
-
 services:
-  mongo:
-    image: mongo:latest
-    container_name: mongodb_kapsayici
-    ports:
-      - 27017:27017
-    networks:
-      - benimagim
-    restart: always
-    volumes:
-      - ./data:/data/db
-
   shopin_api:
     build: ./shopin_api
     container_name: shopinapi_kapsayici
     ports:
-      - 8000:8000
+      - "8000:8000"
     networks:
       - benimagim
-    depends_on:
-      - mongo
 
 networks:
   benimagim:
