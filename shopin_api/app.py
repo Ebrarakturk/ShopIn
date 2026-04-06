@@ -51,7 +51,7 @@ def create_order():
     return jsonify({"message": "Siparisiniz alindi!"}), 201
 
 # 5. GEREKSİNİM: Sipariş Listeleme (KODDA EKSİKTİ, EKLENDİ)
-@app.route('/orders', methods=['GET'])
+@app.route('/orders-list', methods=['GET'])
 def get_orders():
     orders = list(db.orders.find({}, {"_id": 0}))
     return jsonify(orders), 200
@@ -64,7 +64,7 @@ def add_product():
     return jsonify({"message": "Urun basariyla eklendi!"}), 201
 
 # 7. GEREKSİNİM: Ürün Silme (Admin) (KODDA EKSİKTİ, EKLENDİ)
-@app.route('/products/<int:product_id>', methods=['DELETE'])
+@app.route('/products-delete/<int:product_id>', methods=['DELETE'])
 def delete_product(product_id):
     # Ürün ID'sine göre silme işlemi
     db.products.delete_one({"id": product_id})
