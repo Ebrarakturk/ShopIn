@@ -51,17 +51,17 @@ def create_order():
     return jsonify({"message": "Siparisiniz alindi!"}), 201
 
 
-# 5. GEREKSİNİM (Yeni Yol)
-@app.route('/get-all-orders', methods=['GET'])
+# 5. GEREKSİNİM: Kullanıcı Sipariş Listeleme (Arkadaşının sepetiyle karışmaz)
+@app.route('/my-orders-list', methods=['GET'])
 def get_orders():
     orders = list(db.orders.find({}, {"_id": 0}))
     return jsonify(orders), 200
 
-# 7. GEREKSİNİM (Yeni Yol)
-@app.route('/delete-product/<int:product_id>', methods=['DELETE'])
+# 7. GEREKSİNİM: Admin Ürün Silme (Arkadaşının sepetten silmesiyle karışmaz)
+@app.route('/admin-delete-product/<int:product_id>', methods=['DELETE'])
 def delete_product(product_id):
     db.products.delete_one({"id": product_id})
-    return jsonify({"message": "Urun silindi"}), 200
+    return jsonify({"message": "Urun veritabanindan kalici olarak silindi!"}), 200
 
 # 6. GEREKSİNİM: Yeni Ürün Ekleme (Admin)
 @app.route('/products', methods=['POST'])
