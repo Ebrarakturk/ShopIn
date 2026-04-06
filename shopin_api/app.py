@@ -51,17 +51,17 @@ def create_order():
     return jsonify({"message": "Siparisiniz alindi!"}), 201
 
 
-# 5. GEREKSİNİM: Sipariş Listeleme (Yol adını değiştirdik)
-@app.route('/list-all-orders', methods=['GET', 'POST'])
+# 5. GEREKSİNİM (Yeni Yol)
+@app.route('/get-all-orders', methods=['GET'])
 def get_orders():
     orders = list(db.orders.find({}, {"_id": 0}))
     return jsonify(orders), 200
 
-# 7. GEREKSİNİM: Ürün Silme (Metodu POST yaptık, hata riskini bitirdik)
-@app.route('/delete-product-now/<int:product_id>', methods=['GET', 'POST', 'DELETE'])
+# 7. GEREKSİNİM (Yeni Yol)
+@app.route('/delete-product/<int:product_id>', methods=['DELETE'])
 def delete_product(product_id):
     db.products.delete_one({"id": product_id})
-    return jsonify({"message": "Urun kalici olarak silindi!"}), 200
+    return jsonify({"message": "Urun silindi"}), 200
 
 # 6. GEREKSİNİM: Yeni Ürün Ekleme (Admin)
 @app.route('/products', methods=['POST'])
