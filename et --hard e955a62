@@ -1,0 +1,172 @@
+* [33ma434d03[m[33m ([m[1;31morigin/ebrar-backend-metotlari[m[33m)[m Update Ebrar-Aktürk-REST-API-Gorevlerı.md
+* [33m38cc7ce[m[33m ([m[1;32mebrar-backend-metotlari[m[33m)[m h
+* [33ma223cf3[m hatalar
+* [33md0e79b0[m hata
+* [33me5faaa9[m düzeltme
+* [33m0e5bf92[m 5ve7
+[31m|[m * [33mab54324[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m gereksinim
+[31m|[m[31m/[m  
+*   [33me955a62[m Cakismalar zorla cozuldu
+[33m|[m[34m\[m  
+[33m|[m * [33mbdd29ef[m Update WebFrontEnd.md
+[33m|[m * [33mffce765[m Update İsmail-Taşinen-Web-Frontend-Gorevleri.md
+[33m|[m * [33m4187b82[m Update İsmail-Taşinen-Web-Frontend-Gorevleri.md
+[33m|[m * [33md9dd6f5[m Update WebFrontEnd.md
+[33m|[m * [33m1853fdf[m Create İsmail-Taşinen-Web-Frontend-Gorevleri.md
+[33m|[m * [33m37d658f[m Update Ebrar-Aktürk-Web-Frontend-Görevleri.md
+[33m|[m * [33m8ec739c[m Update İsmail-Taşinen-Rest-API-gorevleri.md
+[33m|[m * [33m22dacef[m Update Rest-API.md
+[33m|[m * [33m542bec2[m Update İsmail-Taşinen-Rest-API-gorevleri.md
+[33m|[m * [33m834fb3a[m Update Ebrar-Aktürk-Web-Frontend-Görevleri.md
+[33m|[m * [33m8c1e04d[m Update WebFrontEnd.md
+[33m|[m * [33mf257ae8[m Create İsmail-Taşinen-Rest-API-gorevleri.md
+[33m|[m * [33m6525f51[m Create Ebrar-Aktürk-Web-Frontend-Görevleri.md
+[33m|[m * [33ma49d174[m Update WebFrontEnd.md
+[33m|[m * [33m1a77c3d[m yönetici işlemleri eklendi
+[33m|[m * [33m2a53070[m favoriler eklendi
+[33m|[m * [33m74a417a[m yönetici sipariş listesi
+[33m|[m * [33m0318d25[m yönetici sorunu halledildi
+[33m|[m * [33me9619d4[m deneme
+[33m|[m * [33ma5c97d5[m oldu mu
+[33m|[m * [33m1764b63[m sayfa düzenlendi
+[33m|[m * [33m1905de8[m fotoğraflar düzenlendi
+[33m|[m * [33me1048be[m sipariş geçmişi
+[33m|[m * [33m083a0c8[m sepet eklendi
+[33m|[m * [33m863fdbb[m ürün ekleme
+[33m|[m * [33m77564a0[m giriş
+[33m|[m * [33m0b1a040[m sayfa akışı
+[33m|[m * [33m941d85e[m ismail.js: Mükerrer kayıt kontrolü SİSTEME İŞLENDİ
+[33m|[m * [33m8a3e292[m değişiklik yapıldı
+[33m|[m * [33m3c16a99[m giriş yapma butonu etkinleştirildi
+[33m|[m * [33m61f6d2e[m ismail.js: Mükerrer kayıt kontrolü SİSTEME İŞLENDİ
+[33m|[m * [33mf258318[m Final: Tüm isim uyumsuzlukları giderildi ve main güncellendi
+[33m|[m *   [33ma7e1c08[m Merge branch 'ismail-frontend'
+[33m|[m [35m|[m[36m\[m  
+[33m|[m * [36m\[m   [33m79bc9cd[m Merge conflict çözüldü, Shopier tasarımı korundu
+[33m|[m [1;31m|[m[1;32m\[m [36m\[m  
+[33m|[m * [1;32m|[m [36m|[m [33m2b610a4[m Shopier tarzı modern arayüz tasarımı uygulandı
+[33m|[m [1;32m|[m [1;32m|[m [36m|[m * [33m49d8b66[m[33m ([m[1;32mismail-frontend[m[33m)[m Kayıt kontrolü eklendi
+[33m|[m [1;32m|[m [1;32m|[m [36m|[m[36m/[m  
+[33m|[m [1;32m|[m [1;32m|[m * [33mcbae4b2[m[33m ([m[1;31morigin/ismail-frontend[m[33m)[m js gereksinim
+[33m|[m [1;32m|[m [1;32m|[m[1;32m/[m  
+[33m|[m [1;32m|[m * [33m54c26e5[m ShopIn: 16 teknik gereksinim ve Shopier tarzı modern arayüz tamamlandı
+[33m|[m [1;32m|[m[1;32m/[m  
+[33m|[m * [33m199adda[m gereksinimler eklendi
+[33m|[m * [33m061afb8[m Ismail: 8 teknik gereksinim (Auth, Sepet, Guncelleme) eklendi
+[33m|[m *   [33m43fed0d[m Merge branch 'ebrar-frontend'
+[33m|[m [1;34m|[m[1;35m\[m  
+[33m|[m * [1;35m\[m   [33m974c16d[m Merge branch 'ebrar-frontend'
+[33m|[m [1;36m|[m[31m\[m [1;35m\[m  
+[33m|[m * [31m\[m [1;35m\[m   [33mece3853[m Merge branch 'ebrar-frontend'
+[33m|[m [32m|[m[33m\[m [31m\[m [1;35m\[m  
+[33m|[m * [33m\[m [31m\[m [1;35m\[m   [33maeac4a7[m Merge branch 'ebrar-frontend'
+[33m|[m [34m|[m[35m\[m [33m\[m [31m\[m [1;35m\[m  
+[33m|[m * [35m|[m [33m|[m [31m|[m [1;35m|[m [33m1937935[m Ebrar: CORS tam yetki ile acildi
+[33m|[m * [35m|[m [33m|[m [31m|[m [1;35m|[m [33mb15279f[m Ebrar: CORS siralamasi düzeltildi
+[33m|[m * [35m|[m [33m|[m [31m|[m [1;35m|[m [33m63f62c3[m Ebrar: CORS modülü requirements dosyasina eklendi
+[33m|[m [35m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m * [33md6be48d[m[33m ([m[1;32mebrar-frontend[m[33m)[m gereksinim
+[33m|[m [35m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m[1;35m/[m  
+[33m|[m [35m|[m [35m|[m [33m|[m [31m|[m * [33m593159a[m[33m ([m[1;31morigin/ebrar-frontend[m[33m)[m gereksinimler eklendi
+[33m|[m [35m|[m [35m|[m [33m|[m [31m|[m[31m/[m  
+[33m|[m [35m|[m [35m|[m [33m|[m * [33ma5f3829[m ShopIn: Script dosyasi yeni tasarima göre güncellendi
+[33m|[m [35m|[m [35m|[m [33m|[m[33m/[m  
+[33m|[m [35m|[m [35m|[m * [33md0eee4b[m ShopIn: Marka odakli profesyonel arayüz tasarimi uygulandi
+[33m|[m [35m|[m [35m|[m[35m/[m  
+[33m|[m [35m|[m * [33m91aeda2[m Mağaza vitrini modernleştirildi ve gereksinim tablosu eklendi
+[33m|[m [35m|[m[35m/[m  
+[33m|[m * [33m5b0202d[m Frontend altyapisi kuruldu ve API baglantisi yapildi
+[33m|[m * [33m7846bda[m Frontend baglantisi icin CORS destegi eklendi
+[33m|[m * [33ma5bc556[m Tum REST API metotlari ve syntax hatalari duzeltildi
+[33m|[m * [33mc386ec3[m Update Rest-API.md
+[33m|[m * [33m93d56d7[m Update Ebrar-Aktürk-REST-API-Gorevlerı.md
+[33m|[m * [33m1a90769[m Update Ebrar-Aktürk-REST-API-Gorevlerı.md
+[33m|[m * [33m58ca13b[m Create Ebrar-Aktürk-REST-API-Gorevlerı.md
+[33m|[m * [33mcdab285[m Update Rest-API.md
+[33m|[m * [33med85f7b[m Update Rest-API.md
+[33m|[m * [33m12a46cc[m Satir 68 silindi kesin çözüm
+[33m|[m * [33m57c5ae0[m Ana sayfa route hatası düzeltildi
+[33m|[m * [33md49020c[m Dockerfile ve klasör yapısı güncellendi
+[33m|[m * [33m0441a15[m port ayarı düzeltildi
+[33m|[m * [33m81e0dcf[m Bulut bağlantısı eklendi
+[33m|[m *   [33m5647574[m Merge pull request #2 from Ebrarakturk/ismail-backend-metotlari
+[33m|[m [1;31m|[m[1;32m\[m  
+[33m|[m [1;31m|[m *   [33mfa76945[m[33m ([m[1;31morigin/ismail-backend-metotlari[m[33m, [m[1;32mismail-backend-metotlari[m[33m)[m Merge branch 'main' into ismail-backend-metotlari
+[33m|[m [1;31m|[m [1;33m|[m[1;31m\[m  
+[33m|[m [1;31m|[m [1;33m|[m[1;31m/[m  
+[33m|[m [1;31m|[m[1;31m/[m[1;33m|[m   
+[33m|[m * [1;33m|[m   [33m3facdc3[m Merge pull request #1 from Ebrarakturk/ebrar-backend-metotlari
+[33m|[m [1;35m|[m[1;36m\[m [1;33m\[m  
+[33m|[m [1;35m|[m [1;36m|[m * [33mfa01129[m gereksinimler tamamlandı
+[33m|[m [1;35m|[m [1;36m|[m * [33m3fa276d[m gereksinimler tamamlandı.
+[33m|[m [1;35m|[m [1;36m|[m[1;35m/[m  
+[33m|[m [1;35m|[m[1;35m/[m[1;36m|[m   
+[33m|[m [1;35m|[m [1;36m|[m *   [33m949e5c7[m[33m ([m[1;35mrefs/stash[m[33m)[m On ebrar-backend-metotlari: yedek
+[33m|[m [1;35m|[m[33m_[m[1;36m|[m[33m/[m[32m|[m[33m\[m  
+[33m|[m[33m/[m[1;35m|[m [1;36m|[m [32m|[m [33m|[m 
+[33m|[m [1;35m|[m [1;36m|[m [32m|[m * [33m9cdf502[m untracked files on ebrar-backend-metotlari: 7be2b64 Bulut veritabanı şifresi eklendi yaz.
+[33m|[m [1;35m|[m [1;36m|[m * [33mc9883a8[m index on ebrar-backend-metotlari: 7be2b64 Bulut veritabanı şifresi eklendi yaz.
+[33m|[m [1;35m|[m[33m_[m[1;36m|[m[33m/[m  
+[33m|[m[33m/[m[1;35m|[m [1;36m|[m   
+* [1;35m|[m [1;36m|[m [33m7be2b64[m Bulut veritabanı şifresi eklendi yaz.
+* [1;35m|[m [1;36m|[m [33ma1eb259[m MongoDB Atlas bulut bağlantısı eklendi
+[1;36m|[m [1;35m|[m[1;36m/[m  
+[1;36m|[m[1;36m/[m[1;35m|[m   
+* [1;35m|[m [33mdc3df77[m gereksinimler tamamlandı
+* [1;35m|[m [33mf9586d2[m Sipariş oluşturma metodu eklendi ve veritabanı testleri tamamlandı
+* [1;35m|[m [33mac003c6[m İlk 3 metot bitti
+* [1;35m|[m [33meb5955b[m Altyapı kuruldu, ilk 3 metot (Stok, Filtreleme, Sepet) tamamlandı
+[1;35m|[m[1;35m/[m  
+* [33m5b8801d[m[33m ([m[1;32mmaster[m[33m)[m Update API-Tasarımı.md
+* [33md30e502[m Update API-Tasarımı.md
+* [33mefd6b9d[m Update API-Tasarımı.md
+* [33m84850dc[m Update API-Tasarımı.md
+* [33m4ec1116[m Create ShopIn.yaml
+* [33m9cfcdae[m Update İsmail-Taşinen-Gereksinimler.md
+* [33m37fd160[m Update İsmail-Taşinen-Gereksinimler.md
+* [33m9d35c5f[m Update README.md
+* [33m446c764[m Update README.md
+* [33m43ee2f3[m Rename İsmail-Taşinen-Gerkesinimler.md to İsmail-Taşinen-Gereksinimler.md
+* [33m442e9c9[m Create Ebrar-Aktürk-Gereksinimler.md
+* [33me32eca2[m Update Gereksinim-Analizi.md
+* [33mb7e3bd5[m Create İsmail-Taşinen-Gereksinimler.md
+* [33m037fd37[m Update Gereksinim-Analizi.md
+* [33m23637de[m Update Gereksinim-Analizi.md
+* [33m4b31dcc[m Delete İsmail-Taşinen-Gereksinimler.md
+* [33m923940a[m Delete Ebrar-Aktürk-Gereksinimler.md
+* [33m181c96c[m Update README.md
+* [33m5450dc7[m Create Sunum.md
+* [33ma243e83[m Create MobilBackEnd.md
+* [33m647e312[m Create MobilFrontEnd.md
+* [33mc439a12[m Create WebFrontEnd.md
+* [33m1086066[m Create Rest-API.md
+* [33mf73f15f[m Create API-Tasarımı.md
+* [33mca6596d[m Update README.md
+* [33m2286311[m Update README.md
+* [33m5ff1f4e[m Update Gereksinim-Analizi.md
+* [33md52de12[m Update README.md
+* [33mc27331f[m Update README.md
+* [33m46a1e3a[m Update Gereksinim-Analizi.md
+* [33mc1f5943[m Update Gereksinim-Analizi.md
+* [33m7fb56a1[m Update Gereksinim-Analizi.md
+* [33ma5b8954[m Update İsmail-Taşinen-Gerkesinimler.md
+* [33m2de2eaf[m Update İsmail-Taşinen-Gereksinimler.md
+* [33m814d0bd[m Create İsmail-Taşinen-Gerkesinimler.md
+* [33mcf152de[m Update Ebrar-Aktürk-Gereksinimler.md
+* [33ma67dedd[m Create Ebrar-Aktürk-Gereksinimler.md
+* [33m54ec3b2[m Update Gereksinim-Analizi.md
+* [33ma91bc3c[m Update Gereksinim-Analizi.md
+* [33mb223f90[m Update Gereksinim-Analizi.md
+* [33m05529b6[m Update Gereksinim-Analizi.md
+* [33m4c318ae[m Create Ebrar-Aktürk-Gereksinimler.md
+* [33me864aa4[m Update İsmail-Taşinen-Gereksinimler.md
+* [33m6f29200[m Update İsmail-Taşinen-Gereksinimler.md
+* [33mf48c2ce[m Update README.md
+* [33mf2bef61[m Update Gereksinim-Analizi.md
+* [33m0b02af5[m Create İsmail-Taşinen-Gereksinimler.md
+* [33m64bc7b3[m Create Gereksinim-Analizi.md
+* [33m5883785[m Delete İsmail Tasinen Gereksinimler
+* [33m75c567a[m Update README.md
+* [33m226e9ac[m Update README.md
+* [33m5da110a[m Update README.md
+* [33m41c4308[m Create İsmail Tasinen Gereksinimler
+* [33m8bf691a[m Initial commit
