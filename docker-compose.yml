@@ -17,6 +17,15 @@ services:
     networks:
       - benimagim
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_kapsayici
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - benimagim
+
   shopin_api:
     image: shopin-api-final:latest
     container_name: shopinapi_kapsayici
@@ -27,6 +36,7 @@ services:
     depends_on:
       - mongo
       - redis
+      - rabbitmq
     restart: always
 
 networks:
