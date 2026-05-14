@@ -1,0 +1,63 @@
+[33m7a3ab5c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mismail-backend-metotlari[m[33m)[m Lokal değişiklikler ve Dockerfile güncellendi
+[33mfa76945[m[33m ([m[1;31morigin/ismail-backend-metotlari[m[33m)[m Merge branch 'main' into ismail-backend-metotlari
+[33m3facdc3[m Merge pull request #1 from Ebrarakturk/ebrar-backend-metotlari
+[33mfa01129[m gereksinimler tamamlandı
+[33m3fa276d[m gereksinimler tamamlandı.
+[33mdc3df77[m gereksinimler tamamlandı
+[33mf9586d2[m Sipariş oluşturma metodu eklendi ve veritabanı testleri tamamlandı
+[33mac003c6[m İlk 3 metot bitti
+[33meb5955b[m Altyapı kuruldu, ilk 3 metot (Stok, Filtreleme, Sepet) tamamlandı
+[33m5b8801d[m Update API-Tasarımı.md
+[33md30e502[m Update API-Tasarımı.md
+[33mefd6b9d[m Update API-Tasarımı.md
+[33m84850dc[m Update API-Tasarımı.md
+[33m4ec1116[m Create ShopIn.yaml
+[33m9cfcdae[m Update İsmail-Taşinen-Gereksinimler.md
+[33m37fd160[m Update İsmail-Taşinen-Gereksinimler.md
+[33m9d35c5f[m Update README.md
+[33m446c764[m Update README.md
+[33m43ee2f3[m Rename İsmail-Taşinen-Gerkesinimler.md to İsmail-Taşinen-Gereksinimler.md
+[33m442e9c9[m Create Ebrar-Aktürk-Gereksinimler.md
+[33me32eca2[m Update Gereksinim-Analizi.md
+[33mb7e3bd5[m Create İsmail-Taşinen-Gereksinimler.md
+[33m037fd37[m Update Gereksinim-Analizi.md
+[33m23637de[m Update Gereksinim-Analizi.md
+[33m4b31dcc[m Delete İsmail-Taşinen-Gereksinimler.md
+[33m923940a[m Delete Ebrar-Aktürk-Gereksinimler.md
+[33m181c96c[m Update README.md
+[33m5450dc7[m Create Sunum.md
+[33ma243e83[m Create MobilBackEnd.md
+[33m647e312[m Create MobilFrontEnd.md
+[33mc439a12[m Create WebFrontEnd.md
+[33m1086066[m Create Rest-API.md
+[33mf73f15f[m Create API-Tasarımı.md
+[33mca6596d[m Update README.md
+[33m2286311[m Update README.md
+[33m5ff1f4e[m Update Gereksinim-Analizi.md
+[33md52de12[m Update README.md
+[33mc27331f[m Update README.md
+[33m46a1e3a[m Update Gereksinim-Analizi.md
+[33mc1f5943[m Update Gereksinim-Analizi.md
+[33m7fb56a1[m Update Gereksinim-Analizi.md
+[33ma5b8954[m Update İsmail-Taşinen-Gerkesinimler.md
+[33m2de2eaf[m Update İsmail-Taşinen-Gereksinimler.md
+[33m814d0bd[m Create İsmail-Taşinen-Gerkesinimler.md
+[33mcf152de[m Update Ebrar-Aktürk-Gereksinimler.md
+[33ma67dedd[m Create Ebrar-Aktürk-Gereksinimler.md
+[33m54ec3b2[m Update Gereksinim-Analizi.md
+[33ma91bc3c[m Update Gereksinim-Analizi.md
+[33mb223f90[m Update Gereksinim-Analizi.md
+[33m05529b6[m Update Gereksinim-Analizi.md
+[33m4c318ae[m Create Ebrar-Aktürk-Gereksinimler.md
+[33me864aa4[m Update İsmail-Taşinen-Gereksinimler.md
+[33m6f29200[m Update İsmail-Taşinen-Gereksinimler.md
+[33mf48c2ce[m Update README.md
+[33mf2bef61[m Update Gereksinim-Analizi.md
+[33m0b02af5[m Create İsmail-Taşinen-Gereksinimler.md
+[33m64bc7b3[m Create Gereksinim-Analizi.md
+[33m5883785[m Delete İsmail Tasinen Gereksinimler
+[33m75c567a[m Update README.md
+[33m226e9ac[m Update README.md
+[33m5da110a[m Update README.md
+[33m41c4308[m Create İsmail Tasinen Gereksinimler
+[33m8bf691a[m Initial commit

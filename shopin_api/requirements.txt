@@ -1,2 +1,5 @@
 flask
 pymongo
+redis
+pika
+flask-cors
