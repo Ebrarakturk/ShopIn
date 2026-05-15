@@ -19,6 +19,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Uygulama Docker üzerinde ayağa kalkıyor...'
+                sh 'docker-compose down'
                 // docker-compose dosyanı kullanarak sistemi başlatır
                 sh 'docker-compose up -d'
             }
