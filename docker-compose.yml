@@ -6,7 +6,7 @@ networks:
 
 services:
   api:
-    build: ./shopin_api
+    build: .  # SADECE NOKTA OLACAK (Ana klasörü temsil eder)
     container_name: shopinapi_kapsayici
     ports:
       - "8000:8000"
